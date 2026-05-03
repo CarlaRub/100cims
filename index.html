@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>150 Cims · David & Carla</title>
+
+<!-- PWA -->
+<link rel="manifest" id="pwaManifest">
+<meta name="theme-color" content="#0B0B0B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="150 Cims">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" id="pwaIcon">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0B0B0B;--surf:#1A1A1A;--surf2:#222222;--border:#2A2A2A;
+  --green:#2ECC71;--gdim:#0a1f10;--gborder:#1B7F4C;
+  --orange:#E8A020;--odim:#1a1200;--oborder:#4a3000;
+  --red:#E63946;--rdim:#1a0508;--rborder:#A4161A;
+  --text:#EDEDED;--muted:#B0B0B0;--muted2:#666;--accent:#E63946;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom);}
+
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.016) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.016) 40px);
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 40% at 10% 0%,rgba(46,204,113,.04),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%,rgba(230,57,70,.04),transparent 60%);
+}
+
+/* HEADER */
+header{
+  position:relative;z-index:10;
+  padding:1.8rem 2rem 1.4rem;
+  border-bottom:1px solid var(--border);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;
+  overflow:hidden;background:var(--bg);
+}
+.header-topo{position:absolute;inset:0;pointer-events:none;opacity:.1;}
+.brand{position:relative;z-index:2;}
+.brand h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  letter-spacing:.08em;line-height:1;color:var(--text);
+}
+.brand h1 span.t-red{color:var(--red);}
+.brand h1 span.t-white{color:var(--text);}
+.brand h1 span.t-green{color:var(--green);}
+.brand p{color:var(--muted2);font-size:.56rem;margin-top:.35rem;text-transform:uppercase;letter-spacing:.22em;font-family:'DM Mono',monospace;}
+.hstats{display:flex;gap:0;position:relative;z-index:2;}
+.hstat{padding:.5rem 1.2rem;text-align:center;border-left:1px solid var(--border);}
+.hstat:first-child{border-left:none;}
+.hstat .n{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;letter-spacing:.04em;}
+.hstat .n.g{color:var(--green);}
+.hstat .n.o{color:var(--muted);}
+.hstat .l{font-size:.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.18em;margin-top:.2rem;font-family:'DM Mono',monospace;}
+
+/* PROGRESS */
+.prog{
+  position:relative;z-index:10;padding:.5rem 2rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:1.2rem;background:var(--bg);
+}
+.prog-mountain{flex:1;height:60px;position:relative;overflow:hidden;}
+.prog-mountain svg{width:100%;height:100%;display:block;}
+.prog-dot{
+  position:absolute;transform:translate(-50%,-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 10px rgba(46,204,113,.8);pointer-events:none;
+  transition:left .9s cubic-bezier(.4,0,.2,1),top .9s cubic-bezier(.4,0,.2,1);
+}
+.prog-txt{font-size:.54rem;color:var(--muted2);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.05em;}
+
+/* STEP 1 */
+#step1{position:relative;z-index:10;padding:2rem;}
+.step-label{font-size:.54rem;text-transform:uppercase;letter-spacing:.24em;color:var(--muted2);margin-bottom:.6rem;font-family:'DM Mono',monospace;}
+.step-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);letter-spacing:.07em;line-height:1.15;margin-bottom:1.5rem;color:var(--text);}
+
+.season-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border-radius:2px;font-size:.6rem;border:1px solid var(--border);background:var(--surf);color:var(--text);font-family:'DM Mono',monospace;}
+.season-selector{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-bottom:1.6rem;}
+.sbtn{
+  display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .85rem;border-radius:2px;
+  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--border);background:transparent;color:var(--muted2);
+  cursor:pointer;font-family:'DM Mono',monospace;transition:all .2s;
+}
+.sbtn:hover{border-color:var(--muted);color:var(--text);}
+.sbtn.active{border-color:var(--accent);color:var(--text);background:rgba(230,57,70,.07);}
+
+.block-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.5rem;max-width:960px;}
+.bblock{
+  background:var(--surf);border:1px solid var(--border);border-radius:2px;
+  padding:1rem 1.1rem;cursor:pointer;transition:all .2s;text-align:left;position:relative;overflow:hidden;
+}
+.bblock::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--border);transition:background .2s;}
+.bblock:hover{border-color:#3a3a3a;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.65);}
+.bblock:hover::before{background:var(--accent);}
+.bblock.all-done{background:rgba(27,127,76,.07);border-color:var(--gborder);cursor:default;}
+.bblock.all-done::before{background:var(--green);}
+.bblock.all-done:hover{transform:none;box-shadow:none;}
+.bblock .brange{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.06em;margin-bottom:.3rem;color:var(--text);}
+.bblock.all-done .brange{color:var(--green);}
+.bblock .bsub{font-size:.54rem;color:var(--muted2);line-height:1.7;font-family:'DM Mono',monospace;}
+.bblock .bbar{height:1px;background:var(--border);margin-top:.7rem;overflow:hidden;}
+.bblock .bbar-fill{height:100%;background:var(--green);}
+
+/* STEP 2 */
+#step2{display:none;position:relative;z-index:10;}
+.back-bar{
+  padding:.7rem 2rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--bg);
+}
+.back-btn{
+  font-size:.54rem;color:var(--muted2);background:none;border:1px solid var(--border);
+  border-radius:2px;padding:.28rem .7rem;cursor:pointer;
+  font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;transition:all .15s;
+}
+.back-btn:hover{color:var(--text);border-color:var(--muted);}
+.result-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.07em;}
+.result-meta{font-size:.54rem;color:var(--muted2);margin-left:auto;font-family:'DM Mono',monospace;}
+.legend{
+  display:flex;gap:1.4rem;flex-wrap:wrap;align-items:center;font-size:.54rem;color:var(--muted2);
+  padding:.55rem 2rem;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;letter-spacing:.06em;
+}
+.li{display:flex;align-items:center;gap:.4rem;}
+.dot{width:5px;height:5px;border-radius:50%;}
+.dot.g{background:var(--green);}.dot.o{background:var(--orange);}.dot.r{background:var(--red);}
+.shdr{
+  font-size:.52rem;text-transform:uppercase;letter-spacing:.22em;
+  margin:1.6rem 0 .7rem;display:flex;align-items:center;gap:.8rem;padding:0 2rem;font-family:'DM Mono',monospace;
+}
+.shdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.shdr.g{color:var(--green);}.shdr.o{color:var(--orange);}.shdr.r{color:var(--red);}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:.6rem;padding:0 2rem;}
+.card.seq{grid-column:span 2;}
+@media(max-width:700px){.card.seq{grid-column:span 1;}}
+
+/* CARD */
+.card{
+  background:var(--surf);border:1px solid var(--border);border-radius:2px;
+  padding:1rem;position:relative;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--border);transition:background .2s;}
+.card:hover{border-color:#3a3a3a;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.7);}
+.card:hover::before{background:var(--accent);}
+.card.prohib{opacity:.28;filter:grayscale(.5);}
+.card.prohib:hover{opacity:.6;filter:grayscale(.2);}
+.rank{position:absolute;top:.8rem;right:.8rem;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.04em;color:var(--border);line-height:1;}
+
+.cnum-tag{
+  font-size:.48rem;color:var(--muted2);background:var(--surf2);border-radius:1px;
+  padding:.08rem .35rem;display:inline-block;margin-bottom:.3rem;
+  font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);
+}
+.cname{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.06em;line-height:1.2;margin-bottom:.35rem;padding-right:2rem;color:var(--text);}
+.cloc{font-size:.56rem;color:var(--muted2);margin-bottom:.6rem;line-height:1.6;font-family:'DM Mono',monospace;}
+.dif-bar{margin-bottom:.6rem;}
+.dif-label{
+  font-size:.48rem;color:var(--muted2);margin-bottom:.28rem;display:flex;justify-content:space-between;
+  font-family:'DM Mono',monospace;letter-spacing:.07em;text-transform:uppercase;
+}
+.dif-label span:last-child{color:var(--text);}
+.dif-bg{height:2px;background:var(--border);overflow:hidden;}
+.dif-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--orange),var(--red));}
+.cstats{display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;margin-bottom:.5rem;}
+.cs{background:var(--surf2);border-radius:1px;padding:.35rem .2rem;text-align:center;border:1px solid var(--border);}
+.cs .v{font-size:.7rem;font-weight:500;color:var(--text);font-family:'DM Mono',monospace;}
+.cs .l{font-size:.42rem;color:var(--muted2);margin-top:2px;text-transform:uppercase;letter-spacing:.1em;}
+.cf{display:flex;justify-content:space-between;align-items:center;gap:.4rem;flex-wrap:wrap;}
+.clinks{display:flex;gap:.3rem;flex-wrap:wrap;}
+.cl{
+  font-size:.52rem;padding:.22rem .5rem;border-radius:1px;text-decoration:none;
+  border:1px solid var(--border);color:var(--muted2);transition:all .15s;
+  font-family:'DM Mono',monospace;letter-spacing:.05em;
+}
+.cl:hover{border-color:var(--muted);color:var(--text);}
+.cl.p{border-color:var(--gborder);color:var(--green);}
+.cl.p:hover{border-color:var(--green);background:rgba(46,204,113,.06);}
+.cl.m{border-color:var(--border);color:var(--muted2);}
+.cl.m:hover{border-color:var(--muted);color:var(--text);}
+.meta{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:flex-end;}
+.mtag{font-size:.46rem;padding:.12rem .4rem;border-radius:1px;background:var(--surf2);color:var(--muted2);border:1px solid var(--border);font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.mtag.hotel{border-color:var(--oborder);color:var(--orange);}
+.mtag.total{border-color:var(--border);color:var(--muted2);}
+.cnote{margin-top:.45rem;font-size:.52rem;color:var(--orange);background:rgba(232,160,32,.06);border-radius:1px;padding:.28rem .5rem;line-height:1.6;border-left:2px solid var(--orange);font-family:'DM Mono',monospace;}
+.cint{margin-top:.3rem;font-size:.5rem;color:var(--green);background:rgba(46,204,113,.05);border-radius:1px;padding:.22rem .45rem;line-height:1.6;border-left:2px solid var(--gborder);font-family:'DM Mono',monospace;}
+
+/* SEQUENTIAL double */
+.card.seq{border-color:var(--border);background:var(--surf);}
+.dbl-badge{font-size:.48rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.1rem .4rem;flex-shrink:0;font-family:'DM Mono',monospace;}
+.dbl-top{margin-bottom:.65rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);}
+.dbl-top-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.45rem;flex-wrap:wrap;}
+.dbl-cims{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.55rem;}
+@media(max-width:560px){.dbl-cims{grid-template-columns:1fr;}}
+.cim-box{background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.7rem;}
+.cim-box-num{font-size:.48rem;color:var(--muted2);border-radius:1px;padding:.08rem .28rem;display:inline-block;margin-bottom:.22rem;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);}
+.cim-box-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;line-height:1.2;margin-bottom:.22rem;}
+.cim-box-loc{font-size:.54rem;color:var(--muted2);margin-bottom:.4rem;line-height:1.5;font-family:'DM Mono',monospace;}
+.cim-box-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.2rem;margin-bottom:.35rem;}
+.cim-box-stats .cs{background:var(--bg);}
+.cim-box-links{display:flex;gap:.2rem;flex-wrap:wrap;}
+.dbl-toggle{display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.52rem;color:var(--muted2);cursor:pointer;background:none;border:1px solid var(--border);border-radius:1px;padding:.26rem .6rem;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;transition:all .15s;width:100%;margin-top:.45rem;}
+.dbl-toggle:hover{border-color:var(--muted);color:var(--text);}
+.dbl-toggle .arr{transition:transform .2s;display:inline-block;}
+.dbl-toggle.open .arr{transform:rotate(180deg);}
+.dbl-panel{display:none;margin-top:.45rem;padding-top:.45rem;border-top:1px dashed var(--border);}
+.dbl-panel.open{display:block;}
+
+/* SHARED double */
+.card.shared{border-color:var(--border);background:var(--surf);}
+.shared-cims-row{display:flex;gap:.5rem;margin-bottom:.35rem;flex-wrap:wrap;}
+.shared-cim-pill{background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.25rem .55rem;}
+.shared-cim-pill .pnum{font-size:.46rem;color:var(--muted2);margin-bottom:.08rem;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;}
+.shared-cim-pill .pname{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.06em;line-height:1.2;}
+
+/* misc */
+.no-result{padding:2.5rem;font-size:.72rem;color:var(--muted2);line-height:2;font-family:'DM Mono',monospace;}
+.loading{display:flex;align-items:center;justify-content:center;padding:3rem;gap:.8rem;color:var(--muted2);font-size:.66rem;font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.spin{width:16px;height:16px;border:1px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+@media(max-width:640px){
+  header,#step1,.back-bar,.shdr,.grid,.prog,.legend{padding-left:1rem;padding-right:1rem;}
+  .block-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
+  .grid{grid-template-columns:1fr;}
+  .hstat{padding:.5rem .8rem;}
+}
+
+/* SMART */
+.smart-btn{
+  padding:.28rem .9rem;border-radius:1px;border:1px solid var(--border);background:transparent;
+  color:var(--muted2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.12em;
+  text-transform:uppercase;cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.smart-btn:hover{border-color:var(--muted);color:var(--text);}
+.smart-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+#smartLegend{
+  display:none;flex-wrap:wrap;gap:.8rem;align-items:center;font-size:.52rem;color:var(--muted2);
+  padding:.55rem 2rem;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;
+}
+#smartLegend.open{display:flex;}
+.sli{display:flex;align-items:center;gap:.35rem;}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.sdot.g1{background:#a78bfa;}.sdot.g2{background:var(--green);}.sdot.g3{background:#4a9eff;}
+.sdot.g4{background:var(--orange);}.sdot.g5{background:#6a6a6a;}.sdot.g6{background:#444;}.sdot.g7{background:var(--red);}
+.shdr.g1{color:#a78bfa;}.shdr.g2{color:var(--green);}.shdr.g3{color:#4a9eff;}
+.shdr.g4{color:var(--orange);}.shdr.g5{color:#6a6a6a;}.shdr.g6{color:#555;}.shdr.g7{color:var(--red);}
+.smart-lbl{display:inline-block;font-size:.44rem;text-transform:uppercase;letter-spacing:.1em;border-radius:1px;padding:.07rem .3rem;margin-bottom:.24rem;font-weight:500;border:1px solid;font-family:'DM Mono',monospace;}
+.smart-lbl.g1{background:rgba(167,139,250,.1);color:#a78bfa;border-color:rgba(167,139,250,.3);}
+.smart-lbl.g2{background:rgba(46,204,113,.08);color:var(--green);border-color:var(--gborder);}
+.smart-lbl.g3{background:rgba(74,158,255,.08);color:#4a9eff;border-color:rgba(74,158,255,.3);}
+.smart-lbl.g4{background:rgba(232,160,32,.08);color:var(--orange);border-color:var(--oborder);}
+.smart-lbl.g5{background:rgba(100,100,100,.08);color:#6a6a6a;border-color:#3a3a3a;}
+.smart-lbl.g6{background:var(--surf2);color:#555;border-color:var(--border);}
+.smart-lbl.g7{background:rgba(230,57,70,.08);color:var(--red);border-color:var(--rborder);}
+.smart-reserved{display:inline-block;font-size:.44rem;color:var(--muted2);background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.07rem .3rem;margin-bottom:.24rem;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="header-topo" viewBox="0 0 900 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,85 70,68 130,74 180,48 225,54 265,32 305,38 345,16 385,22 420,9 460,20 500,38 545,30 585,46 625,40 665,58 705,50 745,64 790,58 840,70 900,75 900,110 0,110" fill="none" stroke="white" stroke-width="1.2"/>
+    <polyline points="0,92 70,78 130,84 180,62 225,67 265,48 305,53 345,33 385,38 420,26 460,36 500,52 545,45 585,60 625,54 665,71 705,64 745,76 790,71 840,81 900,85" fill="none" stroke="white" stroke-width=".7"/>
+    <polyline points="0,97 90,88 150,92 195,76 235,80 275,64 315,68 355,50 395,54 430,42 470,54 510,64 550,70 590,66 630,78 670,72 720,84 900,91" fill="none" stroke="white" stroke-width=".4"/>
+    <circle cx="420" cy="9" r="2.5" fill="white" opacity=".6"/>
+    <line x1="420" y1="12" x2="420" y2="28" stroke="white" stroke-width=".6" stroke-dasharray="2 2" opacity=".4"/>
+  </svg>
+  <div class="brand">
+    <h1><span class="t-red">100</span> <span class="t-white">Cims</span> <span class="t-green">de Catalunya</span></h1>
+    <p>Planificador de sortides · David &amp; Carla</p>
+  </div>
+  <div class="hstats">
+    <div class="hstat"><div class="n g" id="sDone">—</div><div class="l">Fets</div></div>
+    <div class="hstat"><div class="n o" id="sPend">—</div><div class="l">Pendents</div></div>
+    <div class="hstat"><div class="n" id="sTotal">150</div><div class="l">Total</div></div>
+  </div>
+</header>
+
+<div class="prog">
+  <div class="prog-mountain">
+    <svg viewBox="0 0 1000 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="progClip">
+          <rect id="progRect" x="0" y="0" width="0" height="60"/>
+        </clipPath>
+      </defs>
+      <!-- full mountain: dark fill -->
+      <polygon points="0,58 50,57 100,56 150,55 180,54 210,52 240,50 265,48 285,45 305,42 322,39 338,36 352,33 364,30 375,27 385,24 394,21 402,18 409,15 415,12 420,9 425,7 430,5 435,3 440,5 444,8 448,12 453,17 459,22 466,27 474,32 483,36 492,39 500,41 510,38 518,35 525,32 531,30 536,28 540,27 543,29 546,31 550,34 556,37 563,40 572,43 582,45 593,47 605,49 618,51 632,52 648,53 665,54 685,55 708,56 735,57 765,58 800,57 835,58 870,57 910,58 960,58 1000,58 1000,60 0,60" fill="#252525"/>
+      <polyline points="0,58 50,57 100,56 150,55 180,54 210,52 240,50 265,48 285,45 305,42 322,39 338,36 352,33 364,30 375,27 385,24 394,21 402,18 409,15 415,12 420,9 425,7 430,5 435,3 440,5 444,8 448,12 453,17 459,22 466,27 474,32 483,36 492,39 500,41 510,38 518,35 525,32 531,30 536,28 540,27 543,29 546,31 550,34 556,37 563,40 572,43 582,45 593,47 605,49 618,51 632,52 648,53 665,54 685,55 708,56 735,57 765,58 800,57 835,58 870,57 910,58 960,58 1000,58" fill="none" stroke="#3a3a3a" stroke-width=".8"/>
+      <!-- clipped green fill -->
+      <polygon points="0,58 50,57 100,56 150,55 180,54 210,52 240,50 265,48 285,45 305,42 322,39 338,36 352,33 364,30 375,27 385,24 394,21 402,18 409,15 415,12 420,9 425,7 430,5 435,3 440,5 444,8 448,12 453,17 459,22 466,27 474,32 483,36 492,39 500,41 510,38 518,35 525,32 531,30 536,28 540,27 543,29 546,31 550,34 556,37 563,40 572,43 582,45 593,47 605,49 618,51 632,52 648,53 665,54 685,55 708,56 735,57 765,58 800,57 835,58 870,57 910,58 960,58 1000,58 1000,60 0,60" fill="#1B7F4C" opacity=".75" clip-path="url(#progClip)"/>
+      <polyline points="0,58 50,57 100,56 150,55 180,54 210,52 240,50 265,48 285,45 305,42 322,39 338,36 352,33 364,30 375,27 385,24 394,21 402,18 409,15 415,12 420,9 425,7 430,5 435,3 440,5 444,8 448,12 453,17 459,22 466,27 474,32 483,36 492,39 500,41 510,38 518,35 525,32 531,30 536,28 540,27 543,29 546,31 550,34 556,37 563,40 572,43 582,45 593,47 605,49 618,51 632,52 648,53 665,54 685,55 708,56 735,57 765,58 800,57 835,58 870,57 910,58 960,58 1000,58" fill="none" stroke="#2ECC71" stroke-width="1.4" clip-path="url(#progClip)"/>
+    </svg>
+    <div class="prog-dot" id="pDot" style="left:0%;top:96.7%"></div>
+  </div>
+  <div class="prog-txt" id="pTxt">Carregant...</div>
+</div>
+
+<div id="step1">
+  <div class="step-label">Selecciona el bloc de dificultat</div>
+  <div class="step-q">On esteu ara?</div>
+  <div class="season-selector" id="seasonSelector"></div>
+  <div class="block-grid" id="blockGrid">
+    <div class="loading"><div class="spin"></div>Carregant...</div>
+  </div>
+</div>
+
+<div id="step2">
+  <div class="back-bar">
+    <button class="back-btn" id="backBtn">← Tornar</button>
+    <div class="result-title" id="resultTitle">—</div>
+    <div class="result-meta" id="resultMeta">—</div>
+    <button class="smart-btn" id="smartBtn">Selecció intel·ligent</button>
+  </div>
+  <div class="legend">
+    <span style="text-transform:uppercase;letter-spacing:.16em;font-size:.48rem;">Condicions:</span>
+    <div class="li"><div class="dot g"></div>Òptima</div>
+    <div class="li"><div class="dot o"></div>Acceptable</div>
+    <div class="li"><div class="dot r"></div>Prohibida</div>
+    <span style="margin-left:auto;font-size:.48rem;letter-spacing:.06em;">Ordenades per dificultat ↑</span>
+  </div>
+  <div id="smartLegend"></div>
+  <div id="results"></div>
+  <div style="height:3rem;"></div>
+</div>
+
+<script>
+const SB  = 'https://kvjiafhslzmobzrahodr.supabase.co';
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2amlhZmhzbHptb2J6cmFob2RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMjc4OTUsImV4cCI6MjA5MDkwMzg5NX0.Y3kTH4jVURUu5EIb0pSl-FXKpDrHNzm1mIvK6p9bElQ';
+const BS  = 20;
+const SMAP  = {invierno:'temp_invierno',primavera:'temp_primavera',verano:'temp_verano',otono:'temp_otono'};
+const SICO  = {invierno:'❄️',primavera:'🌸',verano:'☀️',otono:'🍂'};
+const SLB   = {invierno:'HIV',primavera:'PRI',verano:'EST',otono:'TAR'};
+const SFULL = {invierno:'Hivern',primavera:'Primavera',verano:'Estiu',otono:'Tardor'};
+let routes=[], season='primavera';
+
+function detectSeason(){const m=new Date().getMonth()+1;if(m>=12||m<=2)return'invierno';if(m>=3&&m<=5)return'primavera';if(m>=6&&m<=8)return'verano';return'otono';}
+function tc(r){return r[SMAP[season]]||'orange';}
+function totalCims(list){return list.reduce((s,r)=>s+(r.num_cims||1),0);}
+function doneCims(list){return list.filter(r=>r.hecha).reduce((s,r)=>s+(r.num_cims||1),0);}
+
+async function load(){
+  const r=await fetch(`${SB}/rest/v1/cims_routes?select=*&order=num.asc`,{headers:{'apikey':KEY,'Authorization':`Bearer ${KEY}`}});
+  if(!r.ok)throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+
+function updateStats(){
+  const tot=totalCims(routes),done=doneCims(routes),pct=(done/tot*100).toFixed(0);
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sPend').textContent=tot-done;
+  document.getElementById('sTotal').textContent=tot;
+  const _pw = pct * 10; // viewBox 1000 wide
+  document.getElementById('progRect').setAttribute('width', _pw);
+  // Map pct to mountain Y (viewBox 1000x60)
+  const _mPts = [58,57,56,55,54,52,50,48,45,42,39,36,33,30,27,24,21,18,15,12,9,7,5,3,5,8,12,17,22,27,32,36,39,41,38,35,32,30,28,27,29,31,34,37,40,43,45,47,49,51,52,53,54,55,56,57,58,57,58,57,58,58];
+  const _idx = Math.min(Math.round(pct / 100 * (_mPts.length - 1)), _mPts.length - 1);
+  const _yPct = (_mPts[_idx] / 60) * 100;
+  const dot = document.getElementById('pDot');
+  dot.style.left = pct + '%';
+  dot.style.top = _yPct + '%';
+  document.getElementById('pTxt').textContent=`${done} / ${tot} cims completats (${pct}%)`;
+}
+
+function buildSeasonSelector(){
+  const sel=document.getElementById('seasonSelector');
+  sel.innerHTML='';
+  ['invierno','primavera','verano','otono'].forEach(s=>{
+    const btn=document.createElement('button');
+    btn.className='sbtn'+(s===season?' active':'');
+    btn.innerHTML=`${SICO[s]}&nbsp;${SFULL[s]}`;
+    btn.onclick=()=>{
+      season=s;
+      buildSeasonSelector();
+      buildBlockGrid(false);
+      if(document.getElementById('step2').style.display!=='none'&&currentBlock){
+        showResults(currentBlock.idx,currentBlock.s,currentBlock.e);
+      }
+    };
+    sel.appendChild(btn);
+  });
+}
+
+function buildBlockGrid(redetect=true){
+  if(redetect)season=detectSeason();
+  buildSeasonSelector();
+  const total=routes.length,n=Math.ceil(total/BS),grid=document.getElementById('blockGrid');
+  grid.innerHTML='';
+  for(let i=0;i<n;i++){
+    const s=i*BS+1,e=Math.min((i+1)*BS,total);
+    const br=routes.filter(r=>r.num>=s&&r.num<=e);
+    const pending=br.filter(r=>!r.hecha);
+    const doneC=doneCims(br),totC=totalCims(br),allDone=pending.length===0;
+    const pct=Math.round(doneC/totC*100);
+    const opt=pending.filter(r=>tc(r)==='green').length;
+    const cau=pending.filter(r=>tc(r)==='orange').length;
+    const proh=pending.filter(r=>tc(r)==='red').length;
+    const blockLabel=totC!==br.length?`${br.length} rutes · ${totC} cims`:`${br.length} rutes`;
+    let subHtml='';
+    if(allDone){subHtml=`<span style="color:var(--green)">✓ Totes fetes</span>`;}
+    else{
+      const parts=[];
+      if(opt)parts.push(`<span style="color:var(--green)">${opt} òptimes</span>`);
+      if(cau)parts.push(`<span style="color:var(--orange)">${cau} accept.</span>`);
+      if(proh)parts.push(`<span style="color:var(--red)">${proh} prohib.</span>`);
+      subHtml=parts.join(' · ')||`${pending.length} pendents`;
+    }
+    const card=document.createElement('div');
+    card.className='bblock'+(allDone?' all-done':'');
+    card.innerHTML=`<div class="brange">${s}–${e}</div><div class="bsub">${blockLabel} · ${doneC}/${totC} fets</div><div class="bsub" style="margin-top:.15rem;">${subHtml}</div><div class="bbar"><div class="bbar-fill" style="width:${pct}%"></div></div>`;
+    if(!allDone)card.onclick=()=>showResults(i+1,s,e);
+    grid.appendChild(card);
+  }
+}
+
+/* helpers */
+function tempHtml(r){
+  let h=`<div class="trow">`;
+  ['invierno','primavera','verano','otono'].forEach(s=>{
+    const c=r[`temp_${s}`]||'orange',cur=s===season;
+    h+=`<div class="ts ${c}${cur?' cur':''}"><div class="tbar"></div><span class="sl">${SLB[s]}</span></div>`;
+  });
+  return h+`</div>`;
+}
+function difHtml(r,label){
+  if(!r.dificultad)return'';
+  const pct=Math.min(100,(r.dificultad/83)*100).toFixed(1);
+  return`<div class="dif-bar"><div class="dif-label"><span>${label||'Dificultat'}</span><span style="color:var(--text)">${r.dificultad.toFixed(1)}</span></div><div class="dif-bg"><div class="dif-fill" style="width:${pct}%"></div></div></div>`;
+}
+function hotelNeed(r){return r.hotel&&r.hotel!=='No'&&r.hotel!=='null';}
+
+/* ── SINGLE CARD ── */
+function singleCard(r,rank){
+  const isP=tc(r)==='red';
+  let h=`<div class="card ${isP?'prohib':''}"><div class="rank">#${rank}</div>`;
+  h+=`<div class="cnum-tag">cim ${r.num_cim1||r.num}</div>`;
+  h+=`<div class="cname">${r.nombre}</div>`;
+  h+=`<div class="cloc">📍 ${r.ubicacion||'—'}${r.comarca?' · '+r.comarca:''}${r.altitud?' · '+Math.round(r.altitud)+'m':''}</div>`;
+  h+=difHtml(r);
+  h+=`<div class="cstats"><div class="cs"><div class="v">${r.km?r.km.toFixed(1)+'km':'—'}</div><div class="l">distància</div></div><div class="cs"><div class="v">${r.desnivel?Math.round(r.desnivel)+'m':'—'}</div><div class="l">desnivell</div></div><div class="cs"><div class="v">${r.horas_ruta?r.horas_ruta+'h':'—'}</div><div class="l">ruta</div></div></div>`;
+  h+=`<div class="cf"><div class="clinks">`;
+  if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
+  if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
+  h+=`</div><div class="meta">`;
+  if(hotelNeed(r))h+=`<span class="mtag hotel">🏨 ${r.hotel}</span>`;
+  if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
+  h+=`</div></div>`;
+  if(r.anotaciones)h+=`<div class="cnote">⚠ ${r.anotaciones}</div>`;
+  if(r.cosas_interesantes&&r.cosas_interesantes!=='-')h+=`<div class="cint">★ ${r.cosas_interesantes}</div>`;
+  return h+`</div>`;
+}
+
+/* ── SEQUENTIAL DOUBLE ── */
+function seqCard(r,rank){
+  const isP=tc(r)==='red';
+  const id=`dp${r.num}`;
+  let h=`<div class="card seq ${isP?'prohib':''}"><div class="rank">#${rank}</div>`;
+  h+=`<div class="dbl-top"><div class="dbl-top-row">`;
+  h+=`<span class="dbl-badge">2 cims · 2 rutes</span>`;
+  h+=difHtml(r,'Dificultat total').replace('class="dif-bar"','class="dif-bar" style="flex:1;max-width:220px;"');
+  if(hotelNeed(r))h+=`<span class="mtag hotel" style="margin-left:auto;">🏨 ${r.hotel}</span>`;
+  if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
+  h+=`</div></div>`;
+  h+=`<div class="dbl-cims">`;
+  h+=`<div class="cim-box">`;
+  h+=`<div class="cim-box-num">cim ${r.num_cim1||r.num}</div>`;
+  h+=`<div class="cim-box-name">${r.nombre}</div>`;
+  h+=`<div class="cim-box-loc">📍 ${r.ubicacion||'—'}${r.comarca?' · '+r.comarca:''}${r.altitud?' · '+Math.round(r.altitud)+'m':''}</div>`;
+  h+=`<div class="cim-box-stats"><div class="cs"><div class="v">${r.km?r.km.toFixed(1)+'km':'—'}</div><div class="l">km</div></div><div class="cs"><div class="v">${r.desnivel?Math.round(r.desnivel)+'m':'—'}</div><div class="l">↑</div></div><div class="cs"><div class="v">${r.horas_ruta?r.horas_ruta+'h':'—'}</div><div class="l">h</div></div></div>`;
+  h+=`<div class="cim-box-links">`;
+  if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
+  if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
+  h+=`</div></div>`;
+  h+=`<div class="cim-box">`;
+  h+=`<div class="cim-box-num">cim ${r.num_cim2||'—'}</div>`;
+  h+=`<div class="cim-box-name">${r.nombre2}</div>`;
+  h+=`<div class="cim-box-loc">${r.ubicacion2?`📍 ${r.ubicacion2}${r.comarca2?' · '+r.comarca2:''}${r.altitud2?' · '+Math.round(r.altitud2)+'m':''}`:'<span style="opacity:.3">—</span>'}</div>`;
+  h+=`<div class="cim-box-stats"><div class="cs"><div class="v">${r.km2?r.km2.toFixed(1)+'km':'—'}</div><div class="l">km</div></div><div class="cs"><div class="v">${r.desnivel2?Math.round(r.desnivel2)+'m':'—'}</div><div class="l">↑</div></div><div class="cs"><div class="v">${r.horas_ruta2?r.horas_ruta2+'h':'—'}</div><div class="l">h</div></div></div>`;
+  h+=`<div class="cim-box-links">`;
+  if(r.enlace_ruta2)h+=`<a class="cl p" href="${r.enlace_ruta2}" target="_blank">↗ Ruta</a>`;
+  if(r.enlace_maps_entre)h+=`<a class="cl m" href="${r.enlace_maps_entre}" target="_blank">↗ Maps</a>`;
+  h+=`</div></div>`;
+  h+=`</div>`;
+  if(r.anotaciones)h+=`<div class="cnote">⚠ ${r.anotaciones}</div>`;
+  if(r.cosas_interesantes&&r.cosas_interesantes!=='-')h+=`<div class="cint">★ ${r.cosas_interesantes}</div>`;
+  return h+`</div>`;
+}
+
+/* ── SHARED DOUBLE ── */
+function sharedCard(r,rank){
+  const isP=tc(r)==='red';
+  let h=`<div class="card shared ${isP?'prohib':''}"><div class="rank">#${rank}</div>`;
+  h+=`<div style="margin-bottom:.5rem;"><span class="dbl-badge">2 cims · 1 caminada</span></div>`;
+  h+=`<div class="shared-cims-row">`;
+  h+=`<div class="shared-cim-pill"><div class="pnum">cim ${r.num_cim1||r.num}</div><div class="pname">${r.nombre}</div></div>`;
+  h+=`<div class="shared-cim-pill"><div class="pnum">cim ${r.num_cim2||'—'}</div><div class="pname">${r.nombre2}</div></div>`;
+  h+=`</div>`;
+  h+=`<div class="cloc" style="margin-top:.3rem;">📍 ${r.ubicacion||'—'}${r.comarca?' · '+r.comarca:''}${r.altitud?' · '+Math.round(r.altitud)+'m':''}</div>`;
+  h+=difHtml(r);
+  h+=`<div class="cstats"><div class="cs"><div class="v">${r.km?r.km.toFixed(1)+'km':'—'}</div><div class="l">distància</div></div><div class="cs"><div class="v">${r.desnivel?Math.round(r.desnivel)+'m':'—'}</div><div class="l">desnivell</div></div><div class="cs"><div class="v">${r.horas_ruta?r.horas_ruta+'h':'—'}</div><div class="l">ruta</div></div></div>`;
+  h+=`<div class="cf"><div class="clinks">`;
+  if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
+  if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
+  h+=`</div><div class="meta">`;
+  if(hotelNeed(r))h+=`<span class="mtag hotel">🏨 ${r.hotel}</span>`;
+  if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
+  h+=`</div></div>`;
+  if(r.anotaciones)h+=`<div class="cnote">⚠ ${r.anotaciones}</div>`;
+  if(r.cosas_interesantes&&r.cosas_interesantes!=='-')h+=`<div class="cint">★ ${r.cosas_interesantes}</div>`;
+  return h+`</div>`;
+}
+
+function togPanel(id,btn){
+  const p=document.getElementById(id),open=p.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  btn.querySelector('.arr').textContent=open?'▴':'▾';
+  btn.childNodes[1].textContent=open?'\u00a0Amagar tornada':'\u00a0Enllaços de tornada';
+}
+
+function cardFor(r,rank){
+  if(!r.double_type)return singleCard(r,rank);
+  if(r.double_type==='sequential')return seqCard(r,rank);
+  return sharedCard(r,rank);
+}
+
+/* ── SHOW RESULTS ── */
+function showResults(blockIdx,s,e){
+  smartReset();
+  currentBlock={idx:blockIdx,s,e};
+  const pending=routes.filter(r=>r.num>=s&&r.num<=e&&!r.hecha).sort((a,b)=>(a.dificultad||99)-(b.dificultad||99));
+  currentPending=pending;
+  const opt=pending.filter(r=>tc(r)==='green');
+  const cau=pending.filter(r=>tc(r)==='orange');
+  const proh=pending.filter(r=>tc(r)==='red');
+  document.getElementById('resultTitle').textContent=`Bloc ${blockIdx} · Rutes ${s}–${e}`;
+  document.getElementById('resultMeta').textContent=`${SICO[season]} ${SFULL[season]} · ${pending.length} rutes · ${totalCims(pending)} cims pendents`;
+  let html='',rank=1;
+  const groups=[
+    {cls:'g',ico:'✅',lbl:`Òptimes per ${SFULL[season]}`,list:opt},
+    {cls:'o',ico:'⚠️',lbl:'Acceptables — fer amb cura',list:cau},
+    {cls:'r',ico:'🚫',lbl:'Prohibides aquesta estació',list:proh},
+  ];
+  for(const g of groups){
+    if(!g.list.length)continue;
+    const cimsInGroup=totalCims(g.list);
+    const extra=cimsInGroup!==g.list.length?` · ${cimsInGroup} cims`:'';
+    html+=`<div class="shdr ${g.cls}">${g.ico} ${g.lbl} (${g.list.length} rutes${extra})</div>`;
+    html+=`<div class="grid">`;
+    g.list.forEach(r=>{html+=cardFor(r,rank++);});
+    html+=`</div>`;
+  }
+  if(!html)html=`<div class="no-result">✓ Totes les rutes d'aquest bloc ja estan fetes.</div>`;
+  document.getElementById('results').innerHTML=html;
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('backBtn').onclick=()=>{
+  smartReset();
+  currentBlock=null;
+  document.getElementById('step2').style.display='none';
+  document.getElementById('step1').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+(async()=>{
+  try{
+    routes=await load();
+    updateStats();
+    buildBlockGrid();
+  }catch(e){
+    document.getElementById('blockGrid').innerHTML=`<div style="padding:2rem;color:var(--red);font-family:'DM Mono',monospace;font-size:.7rem;">Error: ${e.message}</div>`;
+  }
+})();
+
+/* SELECCIO INTEL.LIGENT */
+var smartActive = false;
+var currentPending = [];
+var currentBlock = null;
+var ALL_SK = ['temp_invierno','temp_primavera','temp_verano','temp_otono'];
+var SK_NM = {
+  temp_invierno: 'Hivern',
+  temp_primavera: 'Primavera',
+  temp_verano: 'Estiu',
+  temp_otono: 'Tardor'
+};
+var SG = [
+  {g:1, cls:'g1', lbl:'G1 · Reservada per aquesta estació',  desc:'Verda en una estació crítica → màxima prioritat'},
+  {g:2, cls:'g2', lbl:'G2 · Molt favorable',                      desc:'Verda ara + prohibida en alguna altra estació'},
+  {g:3, cls:'g3', lbl:'G3 · Favorable',                           desc:'Verda ara, sense restriccions en altres estacions'},
+  {g:4, cls:'g4', lbl:'G4 · Acceptable',                          desc:'Acceptable ara + prohibida en alguna altra estació'},
+  {g:5, cls:'g5', lbl:'G5 · Poc favorable',                       desc:'Acceptable ara, sense restriccions'},
+  {g:6, cls:'g6', lbl:'G6 · Desfavorable',                        desc:'Acceptable a totes les estacions'},
+  {g:7, cls:'g7', lbl:'G7 · No fer en aquesta estació',           desc:'Temperatura no recomanada aquesta estació'}
+];
+
+function runSmartSelect(pending) {
+  var n = pending.length;
+  if (!n) return [];
+  var gC = {};
+  for (var i = 0; i < ALL_SK.length; i++) {
+    var sk = ALL_SK[i], c = 0;
+    for (var j = 0; j < n; j++) if (pending[j][sk] === 'green') c++;
+    gC[sk] = c;
+  }
+  var critical = ALL_SK.filter(function(sk) { return (gC[sk] / n) < (1/3); });
+  for (var i = 0; i < n; i++) {
+    var r = pending[i];
+    var cands = critical.filter(function(sk) { return r[sk] === 'green'; });
+    if (!cands.length) { r._res = null; }
+    else {
+      var best = cands[0];
+      for (var k = 1; k < cands.length; k++) { if (gC[cands[k]] < gC[best]) best = cands[k]; }
+      r._res = best;
+    }
+  }
+  var sc = SMAP[season];
+  for (var i = 0; i < n; i++) {
+    var r = pending[i];
+    r._sg = null;
+    if (r._res === sc)   { r._gr = 1; continue; }
+    if (r._res !== null) { r._gr = null; continue; }
+    var now = (r[sc] || 'orange');
+    var hasRed = false, allOrange = true;
+    for (var k = 0; k < ALL_SK.length; k++) {
+      var v = (r[ALL_SK[k]] || 'orange');
+      if (ALL_SK[k] !== sc && v === 'red') hasRed = true;
+      if (v !== 'orange') allOrange = false;
+    }
+    if      (now === 'green'  && hasRed)    r._gr = 2;
+    else if (now === 'green')               r._gr = 3;
+    else if (now === 'orange' && hasRed)    r._gr = 4;
+    else if (now === 'orange' && allOrange) r._gr = 6;
+    else if (now === 'orange')              r._gr = 5;
+    else                                    r._gr = 7;
+  }
+  for (var i = 0; i < n; i++) {
+    var r = pending[i];
+    if (r._gr) { for (var k = 0; k < SG.length; k++) { if (SG[k].g === r._gr) { r._sg = SG[k]; break; } } }
+  }
+  return pending.slice().sort(function(a, b) {
+    var ga = (a._gr != null ? a._gr : 99), gb = (b._gr != null ? b._gr : 99);
+    return ga !== gb ? ga - gb : (a.dificultad || 99) - (b.dificultad || 99);
+  });
+}
+
+function cardWithLabel(r, rank) {
+  var h = cardFor(r, rank), lbl = '';
+  if (r._sg) { lbl = '<div class="smart-lbl ' + r._sg.cls + '">' + r._sg.lbl + '</div>'; }
+  else if (r._res) { lbl = '<div class="smart-reserved">Guardar per ' + SK_NM[r._res] + '</div>'; }
+  if (lbl) { h = h.replace(/(<div class="rank">#[0-9]+<\/div>)/, '$1' + lbl); }
+  return h;
+}
+
+function smartReset() {
+  smartActive = false;
+  document.getElementById('smartBtn').classList.remove('active');
+  document.getElementById('smartLegend').classList.remove('open');
+  document.getElementById('smartLegend').innerHTML = '';
+}
+
+function renderSmart(pending) {
+  var n = pending.length, sc = SMAP[season], gC = {};
+  for (var i = 0; i < ALL_SK.length; i++) {
+    var sk = ALL_SK[i], c = 0;
+    for (var j = 0; j < n; j++) if (pending[j][sk] === 'green') c++;
+    gC[sk] = c;
+  }
+  var crit = ALL_SK.filter(function(sk) { return (gC[sk] / n) < (1/3); });
+  var leg = '<span style="text-transform:uppercase;letter-spacing:.16em;font-size:.5rem;color:var(--accent);font-family:\'DM Mono\',monospace;">Selecció intel·ligent</span>';
+  for (var i = 0; i < SG.length; i++) {
+    leg += '<div class="sli"><div class="sdot ' + SG[i].cls + '"></div>' + SG[i].lbl + '</div>';
+  }
+  if (crit.length) {
+    leg += '<span style="margin-left:auto;font-size:.5rem">Crítiques: ' + crit.map(function(sk) { return SK_NM[sk]; }).join(', ') + '</span>';
+  }
+  document.getElementById('smartLegend').innerHTML = leg;
+  document.getElementById('smartLegend').classList.add('open');
+  var sorted = runSmartSelect(pending), html = '', rank = 1;
+  for (var gi = 0; gi < SG.length; gi++) {
+    var sg = SG[gi];
+    var list = sorted.filter(function(r) { return r._gr === sg.g; });
+    if (!list.length) continue;
+    var cn = totalCims(list), ex = cn !== list.length ? ' · ' + cn + ' cims' : '';
+    html += '<div class="shdr ' + sg.cls + '">' + sg.lbl + ' (' + list.length + ' rutes' + ex + ')</div>';
+    html += '<div style="font-size:.5rem;color:var(--muted2);padding:.1rem 2rem .5rem;font-family:\'DM Mono\',monospace;letter-spacing:.04em;">' + sg.desc + '</div>';
+    html += '<div class="grid">';
+    for (var ri = 0; ri < list.length; ri++) html += cardWithLabel(list[ri], rank++);
+    html += '</div>';
+  }
+  var reserved = sorted.filter(function(r) { return r._gr === null; });
+  if (reserved.length) {
+    html += '<div class="shdr" style="color:var(--muted2)">Millor guardar-les (' + reserved.length + ')</div>';
+    html += '<div style="font-size:.5rem;color:var(--muted2);padding:.1rem 2rem .5rem;font-family:\'DM Mono\',monospace;letter-spacing:.04em;">Verdes en estació crítica — fer-les en el seu moment òptim</div>';
+    html += '<div class="grid">';
+    for (var ri = 0; ri < reserved.length; ri++) html += cardWithLabel(reserved[ri], rank++);
+    html += '</div>';
+  }
+  document.getElementById('results').innerHTML = html || '<div class="no-result">Totes les rutes fetes!</div>';
+}
+
+function restoreNormal(pending) {
+  document.getElementById('smartLegend').classList.remove('open');
+  document.getElementById('smartLegend').innerHTML = '';
+  var opt  = pending.filter(function(r) { return tc(r) === 'green'; });
+  var cau  = pending.filter(function(r) { return tc(r) === 'orange'; });
+  var proh = pending.filter(function(r) { return tc(r) === 'red'; });
+  var html = '', rank = 1;
+  var groups = [
+    {cls:'g', lbl:'✅ Òptimes per ' + SFULL[season], list:opt},
+    {cls:'o', lbl:'⚠️ Acceptables — fer amb cura',   list:cau},
+    {cls:'r', lbl:'🚫 Prohibides aquesta estació',    list:proh}
+  ];
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    if (!g.list.length) continue;
+    var cn = totalCims(g.list), ex = cn !== g.list.length ? ' · ' + cn + ' cims' : '';
+    html += '<div class="shdr ' + g.cls + '">' + g.lbl + ' (' + g.list.length + ' rutes' + ex + ')</div>';
+    html += '<div class="grid">';
+    for (var ri = 0; ri < g.list.length; ri++) html += cardFor(g.list[ri], rank++);
+    html += '</div>';
+  }
+  document.getElementById('results').innerHTML = html || '<div class="no-result">Totes les rutes d\'aquest bloc ja estan fetes.</div>';
+}
+
+document.getElementById('smartBtn').onclick = function() {
+  smartActive = !smartActive;
+  document.getElementById('smartBtn').classList.toggle('active', smartActive);
+  if (smartActive) renderSmart(currentPending);
+  else             restoreNormal(currentPending);
+};
+</script>
+
+<script>
+/* ══════════════════════════════════════════════
+   PWA — Manifest + Service Worker
+══════════════════════════════════════════════ */
+
+// ── 1. Icona generada per canvas (sense fitxers externs) ──
+function buildIcon() {
+  const sz = 512;
+  const c = document.createElement('canvas');
+  c.width = c.height = sz;
+  const ctx = c.getContext('2d');
+
+  // Fons
+  ctx.fillStyle = '#0B0B0B';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, sz, sz, sz * 0.18);
+  ctx.fill();
+
+  // Silueta de muntanya
+  ctx.beginPath();
+  ctx.moveTo(sz * 0.05, sz * 0.82);
+  ctx.lineTo(sz * 0.28, sz * 0.38);
+  ctx.lineTo(sz * 0.42, sz * 0.52);
+  ctx.lineTo(sz * 0.50, sz * 0.20);
+  ctx.lineTo(sz * 0.58, sz * 0.52);
+  ctx.lineTo(sz * 0.72, sz * 0.38);
+  ctx.lineTo(sz * 0.95, sz * 0.82);
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0, sz * 0.2, 0, sz * 0.82);
+  grad.addColorStop(0, '#2ECC71');
+  grad.addColorStop(0.5, '#1B7F4C');
+  grad.addColorStop(1, '#0d3d24');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Línia de cim
+  ctx.beginPath();
+  ctx.moveTo(sz * 0.05, sz * 0.82);
+  ctx.lineTo(sz * 0.28, sz * 0.38);
+  ctx.lineTo(sz * 0.42, sz * 0.52);
+  ctx.lineTo(sz * 0.50, sz * 0.20);
+  ctx.lineTo(sz * 0.58, sz * 0.52);
+  ctx.lineTo(sz * 0.72, sz * 0.38);
+  ctx.lineTo(sz * 0.95, sz * 0.82);
+  ctx.strokeStyle = '#2ECC71';
+  ctx.lineWidth = 5;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Punt de cim
+  ctx.beginPath();
+  ctx.arc(sz * 0.50, sz * 0.20, 10, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  // Text "150"
+  ctx.font = `bold ${sz * 0.15}px 'Bebas Neue', sans-serif`;
+  ctx.fillStyle = '#EDEDED';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('150', sz * 0.50, sz * 0.91);
+
+  return c.toDataURL('image/png');
+}
+
+// ── 2. Injectar manifest dinàmicament ──
+function injectManifest(iconUrl) {
+  const manifest = {
+    name: '150 Cims de Catalunya',
+    short_name: '150 Cims',
+    description: 'Planificador de sortides · David & Carla',
+    start_url: '.',
+    display: 'standalone',
+    background_color: '#0B0B0B',
+    theme_color: '#0B0B0B',
+    orientation: 'portrait-primary',
+    icons: [
+      { src: iconUrl, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+      { src: iconUrl, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  document.getElementById('pwaManifest').href = url;
+  document.getElementById('pwaIcon').href     = iconUrl;
+}
+
+// ── 3. Service Worker inline (via Blob) ──
+const SW_CODE = `
+const CACHE = 'cims-v1';
+const PRECACHE = []; // l'app tira de Supabase, no cacheem dades
+
+self.addEventListener('install', e => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+// Network-first per Supabase, cache-first per assets estàtics
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+
+  // Supabase: sempre xarxa (dades en temps real)
+  if (url.hostname.includes('supabase.co') || url.hostname.includes('googleapis.com')) {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    return;
+  }
+
+  // Resta: cache-first amb fallback a xarxa
+  e.respondWith(
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(resp => {
+        if (resp && resp.status === 200 && e.request.method === 'GET') {
+          const clone = resp.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return resp;
+      });
+    })
+  );
+});
+`;
+
+function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  const blob = new Blob([SW_CODE], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl, { scope: './' })
+    .then(reg => console.log('[PWA] SW registrat:', reg.scope))
+    .catch(err => console.warn('[PWA] SW error:', err));
+}
+
+// ── 4. Banner "Afegir a pantalla d'inici" (Android/Chrome) ──
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+function showInstallBanner() {
+  if (document.getElementById('installBanner')) return;
+  const bar = document.createElement('div');
+  bar.id = 'installBanner';
+  bar.style.cssText = `
+    position:fixed;bottom:0;left:0;right:0;z-index:9999;
+    background:#1A1A1A;border-top:1px solid #2A2A2A;
+    padding:.9rem 1.2rem calc(.9rem + env(safe-area-inset-bottom));
+    display:flex;align-items:center;gap:.8rem;
+    font-family:'DM Mono',monospace;font-size:.6rem;color:#B0B0B0;
+    animation:slideUp .3s ease;
+  `;
+  bar.innerHTML = `
+    <span style="font-size:1.4rem">⛰️</span>
+    <span style="flex:1;letter-spacing:.04em;line-height:1.5">
+      Instal·la <strong style="color:#EDEDED">150 Cims</strong> a la pantalla d'inici per accés ràpid
+    </span>
+    <button onclick="installPWA()" style="
+      background:#2ECC71;color:#0B0B0B;border:none;border-radius:2px;
+      padding:.4rem .9rem;font-family:'DM Mono',monospace;font-size:.58rem;
+      font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;
+    ">Instal·lar</button>
+    <button onclick="document.getElementById('installBanner').remove()" style="
+      background:none;border:1px solid #2A2A2A;color:#666;border-radius:2px;
+      padding:.4rem .6rem;font-family:'DM Mono',monospace;font-size:.58rem;cursor:pointer;
+    ">✕</button>
+  `;
+  const style = document.createElement('style');
+  style.textContent = '@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}';
+  document.head.appendChild(style);
+  document.body.appendChild(bar);
+}
+
+function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+    const b = document.getElementById('installBanner');
+    if (b) b.remove();
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  const b = document.getElementById('installBanner');
+  if (b) b.remove();
+});
+
+// ── Init ──
+const iconUrl = buildIcon();
+injectManifest(iconUrl);
+registerSW();
+</script>
+</body>
+</html>
