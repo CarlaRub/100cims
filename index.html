@@ -2,17 +2,12 @@
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>150 Cims · David & Carla</title>
-
-<!-- PWA -->
-<link rel="manifest" id="pwaManifest">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAEdklEQVR4nO3cPW5UQRBF4TEimz04IWcDBIjNkLELVsFKnLIIIoSQvBKCtpif5xm/mfu6+1bV+cKxLJXUR9eWAz/s9/sdcK93sw9AbAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQfJ+9gGmnp+fzz55fHyccok5FugVy3oufQgCOnclFBpaIqATbyZCQ2cI6GBlHDR0jIAgISBICAgSAoKEgA5W/qmQvygeI6ATb8ZBPWcI6NyVRKhniYBe8WooX/5+H3+Jvwf+yebSh59fL33pz+cfIy/xxwJBQkDnrszPm18tiIAgIaATawaGETpGQJAQ0MH6aWGE/iMgSAjoxa2jwgg1BAQJAe12984JI7QjIIgISBoSRoiAIKkekD4hxUeoekAQlQ5oq/GoPEKlA4KubkDbzkbZESoaUNn33lzRgHqoGWXFgGq+dCcVA+qnYJrlAir4xl2VC6i3aoHWCqja6w5QK6AxSmVaKKBS7zpMoYBGqhNrlYDqvOhgVQIar0iyJQIq8pZTlAholvXh/v74qesl/eQPyH9+Wj1BG8of0Fz++YqSB+T/fsfDE3GEkgfkwD9iReaAfF7u0iXLyQk3QpkDwgBpA/KZn2Z5z6WxiTVCaQMKLVBDOQNym5/m+KpAiVyXM6AEohSWMCDP+WnabVHiWCNbQM713CpEZ9kC8hcii/VSBZRpfhr/2lIF5O/p269bv8W8oTwB5ZufEPIE5O+O+WmcRyhJQMzPLEkC8nf3/DS2I5QhIOZnogwB+RPnp/EcofABMT9zhQ/I3ybz0xiOUOyA/Odnw3oat4ZiB4TpAgdUcH4aqxEKHBAcRA2o7Pw0PiMUNSCYCBlQ8flpTEYoZEBoHBqKFxDzYyVeQDg2fYSCBcT8uAkWEJbmjlCkgJgfQ5ECwiUTRyhMQMzPdbMaihGQfz1lxQjIn8NvP1NGKEBAzI+zAAH5c5ifZvwIuQfE/JhzD8ifz/w0g0fIOiD/+XGrpxnZkHVA8OcbEPOjGDZCvgEhBNOAmB/dmBEyDQhROAbE/GxlwAg5BoQN9W7ILiDmJxa7gLC5riPkFRDzE45XQOik3wgZBcT8RGQUELrqNEIuATE/A/RoyCUgBGUREPMzzOYjZBEQ4pofEPMz2LYjNDkg/3pw3fwFMpdsfpoNR2hmQMxPAizQNSnnp9lqhKYF5D8/ietpNmmIBYJkTkDMjwl9hFggSCYExPxYEUeIBYJkdEDMjyFlhFgg7HZCQ0MDYn7yYYHw4r4RGhcQ85MSC4SDO0ZoUEDMT1YsEE7cOkIjAmJ+YrmpIRYIku4BMT8RrR8hFgiSvgExP3GtHCEWCJKOATE/0a0ZoYf9fj/gFGTFjzBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSP4BVD4kAquOLUIAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAEdklEQVR4nO3cPW5UQRBF4TEimz04IWcDBIjNkLELVsFKnLIIIoSQvBKCtpif5xm/mfu6+1bV+cKxLJXUR9eWAz/s9/sdcK93sw9AbAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQfJ+9gGmnp+fzz55fHyccok5FugVy3oufQgCOnclFBpaIqATbyZCQ2cI6GBlHDR0jIAgISBICAgSAoKEgA5W/qmQvygeI6ATb8ZBPWcI6NyVRKhniYBe8WooX/5+H3+Jvwf+yebSh59fL33pz+cfIy/xxwJBQkDnrszPm18tiIAgIaATawaGETpGQJAQ0MH6aWGE/iMgSAjoxa2jwgg1BAQJAe12984JI7QjIIgISBoSRoiAIKkekD4hxUeoekAQlQ5oq/GoPEKlA4KubkDbzkbZESoaUNn33lzRgHqoGWXFgGq+dCcVA+qnYJrlAir4xl2VC6i3aoHWCqja6w5QK6AxSmVaKKBS7zpMoYBGqhNrlYDqvOhgVQIar0iyJQIq8pZTlAholvXh/v74qesl/eQPyH9+Wj1BG8of0Fz++YqSB+T/fsfDE3GEkgfkwD9iReaAfF7u0iXLyQk3QpkDwgBpA/KZn2Z5z6WxiTVCaQMKLVBDOQNym5/m+KpAiVyXM6AEohSWMCDP+WnabVHiWCNbQM713CpEZ9kC8hcii/VSBZRpfhr/2lIF5O/p269bv8W8oTwB5ZufEPIE5O+O+WmcRyhJQMzPLEkC8nf3/DS2I5QhIOZnogwB+RPnp/EcofABMT9zhQ/I3ybz0xiOUOyA/Odnw3oat4ZiB4TpAgdUcH4aqxEKHBAcRA2o7Pw0PiMUNSCYCBlQ8flpTEYoZEBoHBqKFxDzYyVeQDg2fYSCBcT8uAkWEJbmjlCkgJgfQ5ECwiUTRyhMQMzPdbMaihGQfz1lxQjIn8NvP1NGKEBAzI+zAAH5c5ifZvwIuQfE/JhzD8ifz/w0g0fIOiD/+XGrpxnZkHVA8OcbEPOjGDZCvgEhBNOAmB/dmBEyDQhROAbE/GxlwAg5BoQN9W7ILiDmJxa7gLC5riPkFRDzE45XQOik3wgZBcT8RGQUELrqNEIuATE/A/RoyCUgBGUREPMzzOYjZBEQ4pofEPMz2LYjNDkg/3pw3fwFMpdsfpoNR2hmQMxPAizQNSnnp9lqhKYF5D8/ietpNmmIBYJkTkDMjwl9hFggSCYExPxYEUeIBYJkdEDMjyFlhFgg7HZCQ0MDYn7yYYHw4r4RGhcQ85MSC4SDO0ZoUEDMT1YsEE7cOkIjAmJ+YrmpIRYIku4BMT8RrR8hFgiSvgExP3GtHCEWCJKOATE/0a0ZoYf9fj/gFGTFjzBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSP4BVD4kAquOLUIAAAAASUVORK5CYII=">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0B0B0B">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="150 Cims">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" id="pwaIcon">
+<title>150 Cims · David & Carla</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -24,7 +19,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom);}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
 
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
@@ -191,6 +186,8 @@ header{
 .cl.p:hover{border-color:var(--green);background:rgba(46,204,113,.06);}
 .cl.m{border-color:var(--border);color:var(--muted2);}
 .cl.m:hover{border-color:var(--muted);color:var(--text);}
+.cl.w{border-color:#1e3a5a;color:#5a9bd4;}
+.cl.w:hover{border-color:#5a9bd4;background:rgba(90,155,212,.06);}
 .meta{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:flex-end;}
 .mtag{font-size:.46rem;padding:.12rem .4rem;border-radius:1px;background:var(--surf2);color:var(--muted2);border:1px solid var(--border);font-family:'DM Mono',monospace;letter-spacing:.06em;}
 .mtag.hotel{border-color:var(--oborder);color:var(--orange);}
@@ -284,7 +281,7 @@ header{
     <p>Planificador de sortides · David &amp; Carla</p>
   </div>
   <div class="hstats">
-    <div class="hstat"><div class="n g" id="sDone">—</div><div class="l">Fets</div></div>
+    <div class="hstat" id="hstatDone" onclick="toggleDone()" style="cursor:pointer;"><div class="n g" id="sDone">—</div><div class="l">Fets</div></div>
     <div class="hstat"><div class="n o" id="sPend">—</div><div class="l">Pendents</div></div>
     <div class="hstat"><div class="n" id="sTotal">150</div><div class="l">Total</div></div>
   </div>
@@ -455,6 +452,7 @@ function singleCard(r,rank){
   h+=`<div class="cf"><div class="clinks">`;
   if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
   if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
+  if(r.enlace_meteocat)h+=`<a class="cl w" href="${r.enlace_meteocat}" target="_blank">☁ Meteo</a>`;
   h+=`</div><div class="meta">`;
   if(hotelNeed(r))h+=`<span class="mtag hotel">🏨 ${r.hotel}</span>`;
   if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
@@ -484,6 +482,7 @@ function seqCard(r,rank){
   h+=`<div class="cim-box-links">`;
   if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
   if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
+  if(r.enlace_meteocat)h+=`<a class="cl w" href="${r.enlace_meteocat}" target="_blank">☁ Meteo</a>`;
   h+=`</div></div>`;
   h+=`<div class="cim-box">`;
   h+=`<div class="cim-box-num">cim ${r.num_cim2||'—'}</div>`;
@@ -493,6 +492,7 @@ function seqCard(r,rank){
   h+=`<div class="cim-box-links">`;
   if(r.enlace_ruta2)h+=`<a class="cl p" href="${r.enlace_ruta2}" target="_blank">↗ Ruta</a>`;
   if(r.enlace_maps_entre)h+=`<a class="cl m" href="${r.enlace_maps_entre}" target="_blank">↗ Maps</a>`;
+  if(r.enlace_meteocat2)h+=`<a class="cl w" href="${r.enlace_meteocat2}" target="_blank">☁ Meteo</a>`;
   h+=`</div></div>`;
   h+=`</div>`;
   if(r.anotaciones)h+=`<div class="cnote">⚠ ${r.anotaciones}</div>`;
@@ -515,6 +515,7 @@ function sharedCard(r,rank){
   h+=`<div class="cf"><div class="clinks">`;
   if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
   if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
+  if(r.enlace_meteocat)h+=`<a class="cl w" href="${r.enlace_meteocat}" target="_blank">☁ Meteo</a>`;
   h+=`</div><div class="meta">`;
   if(hotelNeed(r))h+=`<span class="mtag hotel">🏨 ${r.hotel}</span>`;
   if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
@@ -746,205 +747,121 @@ document.getElementById('smartBtn').onclick = function() {
 };
 </script>
 
+<!-- SECCIO HECHAS -->
+<div id="stepDone" style="display:none;position:relative;z-index:10;">
+  <div class="back-bar">
+    <button class="back-btn" onclick="toggleDone()">&#8592; Tornar</button>
+    <div class="result-title">CIMS COMPLETATS</div>
+    <div class="result-meta" id="doneMeta">&#8212;</div>
+  </div>
+  <div id="doneList" style="padding:0 0 3rem;"></div>
+</div>
+
 <script>
-/* ══════════════════════════════════════════════
-   PWA — Manifest + Service Worker
-══════════════════════════════════════════════ */
+var doneOpen = false;
+var doneBuilt = false;
 
-// ── 1. Icona generada per canvas (sense fitxers externs) ──
-function buildIcon() {
-  const sz = 512;
-  const c = document.createElement('canvas');
-  c.width = c.height = sz;
-  const ctx = c.getContext('2d');
-
-  // Fons
-  ctx.fillStyle = '#0B0B0B';
-  ctx.beginPath();
-  ctx.roundRect(0, 0, sz, sz, sz * 0.18);
-  ctx.fill();
-
-  // Silueta de muntanya
-  ctx.beginPath();
-  ctx.moveTo(sz * 0.05, sz * 0.82);
-  ctx.lineTo(sz * 0.28, sz * 0.38);
-  ctx.lineTo(sz * 0.42, sz * 0.52);
-  ctx.lineTo(sz * 0.50, sz * 0.20);
-  ctx.lineTo(sz * 0.58, sz * 0.52);
-  ctx.lineTo(sz * 0.72, sz * 0.38);
-  ctx.lineTo(sz * 0.95, sz * 0.82);
-  ctx.closePath();
-  const grad = ctx.createLinearGradient(0, sz * 0.2, 0, sz * 0.82);
-  grad.addColorStop(0, '#2ECC71');
-  grad.addColorStop(0.5, '#1B7F4C');
-  grad.addColorStop(1, '#0d3d24');
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  // Línia de cim
-  ctx.beginPath();
-  ctx.moveTo(sz * 0.05, sz * 0.82);
-  ctx.lineTo(sz * 0.28, sz * 0.38);
-  ctx.lineTo(sz * 0.42, sz * 0.52);
-  ctx.lineTo(sz * 0.50, sz * 0.20);
-  ctx.lineTo(sz * 0.58, sz * 0.52);
-  ctx.lineTo(sz * 0.72, sz * 0.38);
-  ctx.lineTo(sz * 0.95, sz * 0.82);
-  ctx.strokeStyle = '#2ECC71';
-  ctx.lineWidth = 5;
-  ctx.lineJoin = 'round';
-  ctx.stroke();
-
-  // Punt de cim
-  ctx.beginPath();
-  ctx.arc(sz * 0.50, sz * 0.20, 10, 0, Math.PI * 2);
-  ctx.fillStyle = '#fff';
-  ctx.fill();
-
-  // Text "150"
-  ctx.font = `bold ${sz * 0.15}px 'Bebas Neue', sans-serif`;
-  ctx.fillStyle = '#EDEDED';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('150', sz * 0.50, sz * 0.91);
-
-  return c.toDataURL('image/png');
-}
-
-// ── 2. Injectar manifest dinàmicament ──
-function injectManifest(iconUrl) {
-  const manifest = {
-    name: '150 Cims de Catalunya',
-    short_name: '150 Cims',
-    description: 'Planificador de sortides · David & Carla',
-    start_url: '.',
-    display: 'standalone',
-    background_color: '#0B0B0B',
-    theme_color: '#0B0B0B',
-    orientation: 'portrait-primary',
-    icons: [
-      { src: iconUrl, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-      { src: iconUrl, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-    ]
-  };
-  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  document.getElementById('pwaManifest').href = url;
-  document.getElementById('pwaIcon').href     = iconUrl;
-}
-
-// ── 3. Service Worker inline (via Blob) ──
-const SW_CODE = `
-const CACHE = 'cims-v1';
-const PRECACHE = []; // l'app tira de Supabase, no cacheem dades
-
-self.addEventListener('install', e => {
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
-});
-
-// Network-first per Supabase, cache-first per assets estàtics
-self.addEventListener('fetch', e => {
-  const url = new URL(e.request.url);
-
-  // Supabase: sempre xarxa (dades en temps real)
-  if (url.hostname.includes('supabase.co') || url.hostname.includes('googleapis.com')) {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-    return;
+function toggleDone() {
+  doneOpen = !doneOpen;
+  var s1 = document.getElementById("step1");
+  var s2 = document.getElementById("step2");
+  var sd = document.getElementById("stepDone");
+  var hd = document.getElementById("hstatDone");
+  if (doneOpen) {
+    s1.style.display = "none";
+    s2.style.display = "none";
+    sd.style.display = "block";
+    hd.style.borderBottom = "2px solid var(--green)";
+    if (!doneBuilt) buildDoneSection();
+  } else {
+    sd.style.display = "none";
+    hd.style.borderBottom = "";
+    s1.style.display = "block";
   }
-
-  // Resta: cache-first amb fallback a xarxa
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(resp => {
-        if (resp && resp.status === 200 && e.request.method === 'GET') {
-          const clone = resp.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-        }
-        return resp;
-      });
-    })
-  );
-});
-`;
-
-function registerSW() {
-  if (!('serviceWorker' in navigator)) return;
-  const blob = new Blob([SW_CODE], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl, { scope: './' })
-    .then(reg => console.log('[PWA] SW registrat:', reg.scope))
-    .catch(err => console.warn('[PWA] SW error:', err));
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-// ── 4. Banner "Afegir a pantalla d'inici" (Android/Chrome) ──
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  showInstallBanner();
-});
+function buildDoneSection() {
+  doneBuilt = true;
+  var done = routes.filter(function(r) { return r.hecha; });
+  done.sort(function(a, b) {
+    var na = parseInt((a.fecha || "").split(" - ")[0]) || 999;
+    var nb = parseInt((b.fecha || "").split(" - ")[0]) || 999;
+    return na - nb;
+  });
+  var totalKm  = done.reduce(function(s, r) { return s + (parseFloat(r.km) || 0); }, 0);
+  var totalDsn = done.reduce(function(s, r) { return s + (parseFloat(r.desnivel) || 0); }, 0);
+  var totalH   = done.reduce(function(s, r) { return s + (parseFloat(r.horas_ruta) || 0); }, 0);
+  document.getElementById("doneMeta").textContent =
+    done.length + " rutes · " + totalCims(done) + " cims · " +
+    totalKm.toFixed(1) + " km · " + Math.round(totalDsn) + " m↑ · " + totalH.toFixed(1) + " h";
 
-function showInstallBanner() {
-  if (document.getElementById('installBanner')) return;
-  const bar = document.createElement('div');
-  bar.id = 'installBanner';
-  bar.style.cssText = `
-    position:fixed;bottom:0;left:0;right:0;z-index:9999;
-    background:#1A1A1A;border-top:1px solid #2A2A2A;
-    padding:.9rem 1.2rem calc(.9rem + env(safe-area-inset-bottom));
-    display:flex;align-items:center;gap:.8rem;
-    font-family:'DM Mono',monospace;font-size:.6rem;color:#B0B0B0;
-    animation:slideUp .3s ease;
-  `;
-  bar.innerHTML = `
-    <span style="font-size:1.4rem">⛰️</span>
-    <span style="flex:1;letter-spacing:.04em;line-height:1.5">
-      Instal·la <strong style="color:#EDEDED">150 Cims</strong> a la pantalla d'inici per accés ràpid
-    </span>
-    <button onclick="installPWA()" style="
-      background:#2ECC71;color:#0B0B0B;border:none;border-radius:2px;
-      padding:.4rem .9rem;font-family:'DM Mono',monospace;font-size:.58rem;
-      font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;
-    ">Instal·lar</button>
-    <button onclick="document.getElementById('installBanner').remove()" style="
-      background:none;border:1px solid #2A2A2A;color:#666;border-radius:2px;
-      padding:.4rem .6rem;font-family:'DM Mono',monospace;font-size:.58rem;cursor:pointer;
-    ">✕</button>
-  `;
-  const style = document.createElement('style');
-  style.textContent = '@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}';
-  document.head.appendChild(style);
-  document.body.appendChild(bar);
+  var out = "";
+  done.forEach(function(r) {
+    var parts   = (r.fecha || "").split(" - ");
+    var sNum    = parts[0] || "—";
+    var sDate   = (parts[1] || "").trim();
+    var isDbl   = r.double_type && r.nombre2;
+
+    out += "<div style=\"display:grid;grid-template-columns:4.5rem 1fr;gap:.8rem;align-items:start;" +
+           "padding:.9rem 1rem;margin:.4rem 2rem;background:var(--surf);border:1px solid var(--border);" +
+           "border-radius:2px;border-left:2px solid var(--gborder);\">";
+
+    // Columna esquerra
+    out += "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;\">" +
+           "<div style=\"font-family:Bebas Neue,sans-serif;font-size:1.8rem;line-height:1;color:var(--green);\">" + sNum + "</div>" +
+           "<div style=\"font-size:.42rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted2);font-family:DM Mono,monospace;\">sortida</div>" +
+           "<div style=\"font-size:.48rem;color:var(--muted2);font-family:DM Mono,monospace;margin-top:.2rem;text-align:center;line-height:1.4;\">" + sDate + "</div>" +
+           "</div>";
+
+    // Columna dreta
+    out += "<div>";
+
+    if (isDbl) {
+      out += "<div style=\"display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.35rem;\">" +
+             "<div style=\"background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.2rem .5rem;\">" +
+             "<div class=\"cnum-tag\">cim " + (r.num_cim1 || r.num) + "</div>" +
+             "<div class=\"cname\" style=\"padding-right:0;\">" + r.nombre + "</div></div>" +
+             "<div style=\"background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.2rem .5rem;\">" +
+             "<div class=\"cnum-tag\">cim " + (r.num_cim2 || "—") + "</div>" +
+             "<div class=\"cname\" style=\"padding-right:0;\">" + r.nombre2 + "</div></div>" +
+             "</div>";
+    } else {
+      out += "<div class=\"cnum-tag\">cim " + (r.num_cim1 || r.num) + "</div>" +
+             "<div class=\"cname\" style=\"margin-bottom:.3rem;padding-right:0;\">" + r.nombre + "</div>";
+    }
+
+    out += "<div class=\"cloc\">&#128205; " +
+           (r.ubicacion || "—") + (r.comarca ? " · " + r.comarca : "") +
+           (r.altitud ? " · " + Math.round(r.altitud) + "m" : "") + "</div>";
+
+    out += "<div class=\"cstats\" style=\"margin-bottom:.4rem;\">" +
+           (r.km ? "<div class=\"cs\"><div class=\"v\">" + parseFloat(r.km).toFixed(1) + "km</div><div class=\"l\">dist</div></div>" : "") +
+           (r.desnivel ? "<div class=\"cs\"><div class=\"v\">" + Math.round(r.desnivel) + "m</div><div class=\"l\">↑</div></div>" : "") +
+           (r.horas_ruta ? "<div class=\"cs\"><div class=\"v\">" + r.horas_ruta + "h</div><div class=\"l\">temps</div></div>" : "") +
+           "</div>";
+
+    out += "<div class=\"clinks\">" +
+           (r.enlace_ruta ? "<a class=\"cl p\" href=\"" + r.enlace_ruta + "\" target=\"_blank\">&#8599; Ruta</a>" : "") +
+           (r.enlace_strava ? "<a class=\"cl\" href=\"" + r.enlace_strava + "\" target=\"_blank\" style=\"border-color:#fc4c02;color:#fc4c02;\">&#8599; Strava</a>" : "") +
+           (r.enlace_strava2 ? "<a class=\"cl\" href=\"" + r.enlace_strava2 + "\" target=\"_blank\" style=\"border-color:#fc4c02;color:#fc4c02;\">&#8599; Strava 2</a>" : "") +
+           (r.enlace_maps ? "<a class=\"cl m\" href=\"" + r.enlace_maps + "\" target=\"_blank\">&#8599; Maps</a>" : "") +
+           (r.enlace_meteocat ? "<a class=\"cl w\" href=\"" + r.enlace_meteocat + "\" target=\"_blank\">&#9729; Meteo</a>" : "") +
+           "</div>";
+
+    out += "</div></div>";
+  });
+
+  document.getElementById("doneList").innerHTML = out ||
+    "<div class=\"no-result\">Encara no heu fet cap cim!</div>";
 }
-
-function installPWA() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => {
-    deferredPrompt = null;
-    const b = document.getElementById('installBanner');
-    if (b) b.remove();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
   });
 }
-
-window.addEventListener('appinstalled', () => {
-  const b = document.getElementById('installBanner');
-  if (b) b.remove();
-});
-
-// ── Init ──
-const iconUrl = buildIcon();
-injectManifest(iconUrl);
-registerSW();
 </script>
 </body>
 </html>
