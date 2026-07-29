@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cims150-v1';
+const CACHE_NAME = 'cims150-v2';
 const CORE_ASSETS = ['./', './index.html'];
 
 self.addEventListener('install', (event) => {
@@ -23,9 +23,10 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = event.request.url;
+  const isNavigation = event.request.mode === 'navigate' || url.endsWith('/index.html') || url.endsWith('/');
 
-  if (url.includes('supabase.co')) {
-    // Network-first: dades en viu de Supabase, amb fallback a cache si no hi ha xarxa
+  if (url.includes('supabase.co') || isNavigation) {
+    // Network-first: dades en viu de Supabase i el propi HTML, amb fallback a cache si no hi ha xarxa
     event.respondWith(
       fetch(event.request)
         .then((res) => {
@@ -38,7 +39,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first: HTML, fonts i altres assets estàtics
+  // Cache-first: fonts i altres assets estàtics (imatges, etc.)
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
