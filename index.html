@@ -56,6 +56,10 @@ header{
 .hstat .n.g{color:var(--green);}
 .hstat .n.o{color:var(--muted);}
 .hstat .l{font-size:.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.18em;margin-top:.2rem;font-family:'DM Mono',monospace;}
+.mini-star{display:none;width:2.4rem;height:2.9rem;background-image:url('estrellas-fondo.png?v=3');background-size:contain;background-position:center;background-repeat:no-repeat;vertical-align:middle;margin-left:.4rem;opacity:.95;}
+@media(max-width:900px){.mini-star{display:inline-block;}}
+.mini-stars{display:none;width:38px;height:52px;margin-left:.7rem;background-image:url('estrellas-fondo.png?v=3');background-size:220% auto;background-position:28% 12%;background-repeat:no-repeat;border-radius:4px;flex-shrink:0;}
+@media(max-width:900px){.mini-stars{display:block;}}
 
 /* PROGRESS */
 .prog{
@@ -281,7 +285,8 @@ header{
   <div class="hstats">
     <div class="hstat" id="hstatDone" onclick="toggleDone()" style="cursor:pointer;"><div class="n g" id="sDone">—</div><div class="l">Fets</div></div>
     <div class="hstat"><div class="n o" id="sPend">—</div><div class="l">Pendents</div></div>
-    <div class="hstat"><div class="n" id="sTotal">150</div><div class="l">Total</div></div>
+    <div class="hstat"><div class="n" style="display:inline-flex;align-items:center;gap:.3rem;"><span id="sTotal">150</span><span class="mini-star"></span></div><div class="l">Total</div></div>
+    <div class="mini-stars"></div>
   </div>
 </header>
 
