@@ -56,6 +56,8 @@ header{
 .hstat .n.g{color:var(--green);}
 .hstat .n.o{color:var(--muted);}
 .hstat .l{font-size:.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.18em;margin-top:.2rem;font-family:'DM Mono',monospace;}
+.mini-stars{display:none;width:38px;height:52px;margin-left:.7rem;background-image:url('estrellas-fondo.png?v=3');background-size:220% auto;background-position:28% 12%;background-repeat:no-repeat;border-radius:4px;flex-shrink:0;}
+@media(max-width:900px){.mini-stars{display:block;}}
 
 /* PROGRESS */
 .prog{
@@ -75,6 +77,8 @@ header{
 
 /* STEP 1 */
 #step1{position:relative;z-index:10;padding:2rem;}
+.stars-decor{position:absolute;top:0;right:0;width:46vw;max-width:900px;height:85vh;background-image:url('estrellas-fondo.png?v=3');background-repeat:no-repeat;background-position:top right;background-size:contain;opacity:.9;pointer-events:none;z-index:-1;}
+@media(max-width:900px){.stars-decor{display:none;}}
 .step-label{font-size:.54rem;text-transform:uppercase;letter-spacing:.24em;color:var(--muted2);margin-bottom:.6rem;font-family:'DM Mono',monospace;}
 .step-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);letter-spacing:.07em;line-height:1.15;margin-bottom:1.5rem;color:var(--text);}
 
@@ -280,6 +284,7 @@ header{
     <div class="hstat" id="hstatDone" onclick="toggleDone()" style="cursor:pointer;"><div class="n g" id="sDone">—</div><div class="l">Fets</div></div>
     <div class="hstat"><div class="n o" id="sPend">—</div><div class="l">Pendents</div></div>
     <div class="hstat"><div class="n" id="sTotal">150</div><div class="l">Total</div></div>
+    <div class="mini-stars"></div>
   </div>
 </header>
 
@@ -304,6 +309,7 @@ header{
 </div>
 
 <div id="step1">
+  <div class="stars-decor"></div>
   <div class="step-label">Selecciona el bloc de dificultat</div>
   <div class="step-q">On esteu ara?</div>
   <div class="season-selector" id="seasonSelector"></div>
@@ -458,60 +464,19 @@ function singleCard(r,rank){
   return h+`</div>`;
 }
 
-/* ── SEQUENTIAL DOUBLE ── */
-function seqCard(r,rank){
+/* ── INDIVIDUAL CARD (one summit of a double route, shown as its own card) ── */
+function individualCard(r,f,rank,badge){
   const isP=tc(r)==='red';
-  const id=`dp${r.num}`;
-  let h=`<div class="card seq ${isP?'prohib':''}"><div class="rank">#${rank}</div>`;
-  h+=`<div class="dbl-top"><div class="dbl-top-row">`;
-  h+=`<span class="dbl-badge">2 cims · 2 rutes</span>`;
-  h+=difHtml(r,'Dificultat total').replace('class="dif-bar"','class="dif-bar" style="flex:1;max-width:220px;"');
-  if(hotelNeed(r))h+=`<span class="mtag hotel" style="margin-left:auto;">🏨 ${r.hotel}</span>`;
-  if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
-  h+=`</div></div>`;
-  h+=`<div class="dbl-cims">`;
-  h+=`<div class="cim-box">`;
-  h+=`<div class="cim-box-num">cim ${r.num_cim1||r.num}</div>`;
-  h+=`<div class="cim-box-name">${r.nombre}</div>`;
-  h+=`<div class="cim-box-loc">📍 ${r.ubicacion||'—'}${r.comarca?' · '+r.comarca:''}${r.altitud?' · '+Math.round(r.altitud)+'m':''}</div>`;
-  h+=`<div class="cim-box-stats"><div class="cs"><div class="v">${r.km?r.km.toFixed(1)+'km':'—'}</div><div class="l">km</div></div><div class="cs"><div class="v">${r.desnivel?Math.round(r.desnivel)+'m':'—'}</div><div class="l">↑</div></div><div class="cs"><div class="v">${r.horas_ruta?r.horas_ruta+'h':'—'}</div><div class="l">h</div></div></div>`;
-  h+=`<div class="cim-box-links">`;
-  if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
-  if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
-  if(r.enlace_meteocat)h+=`<a class="cl w" href="${r.enlace_meteocat}" target="_blank">☁ Meteo</a>`;
-  h+=`</div></div>`;
-  h+=`<div class="cim-box">`;
-  h+=`<div class="cim-box-num">cim ${r.num_cim2||'—'}</div>`;
-  h+=`<div class="cim-box-name">${r.nombre2}</div>`;
-  h+=`<div class="cim-box-loc">${r.ubicacion2?`📍 ${r.ubicacion2}${r.comarca2?' · '+r.comarca2:''}${r.altitud2?' · '+Math.round(r.altitud2)+'m':''}`:'<span style="opacity:.3">—</span>'}</div>`;
-  h+=`<div class="cim-box-stats"><div class="cs"><div class="v">${r.km2?r.km2.toFixed(1)+'km':'—'}</div><div class="l">km</div></div><div class="cs"><div class="v">${r.desnivel2?Math.round(r.desnivel2)+'m':'—'}</div><div class="l">↑</div></div><div class="cs"><div class="v">${r.horas_ruta2?r.horas_ruta2+'h':'—'}</div><div class="l">h</div></div></div>`;
-  h+=`<div class="cim-box-links">`;
-  if(r.enlace_ruta2)h+=`<a class="cl p" href="${r.enlace_ruta2}" target="_blank">↗ Ruta</a>`;
-  if(r.enlace_maps_entre)h+=`<a class="cl m" href="${r.enlace_maps_entre}" target="_blank">↗ Maps</a>`;
-  if(r.enlace_meteocat2)h+=`<a class="cl w" href="${r.enlace_meteocat2}" target="_blank">☁ Meteo</a>`;
-  h+=`</div></div>`;
-  h+=`</div>`;
-  if(r.anotaciones)h+=`<div class="cnote">⚠ ${r.anotaciones}</div>`;
-  if(r.cosas_interesantes&&r.cosas_interesantes!=='-')h+=`<div class="cint">★ ${r.cosas_interesantes}</div>`;
-  return h+`</div>`;
-}
-
-/* ── SHARED DOUBLE ── */
-function sharedCard(r,rank){
-  const isP=tc(r)==='red';
-  let h=`<div class="card shared ${isP?'prohib':''}"><div class="rank">#${rank}</div>`;
-  h+=`<div style="margin-bottom:.5rem;"><span class="dbl-badge">2 cims · 1 caminada</span></div>`;
-  h+=`<div class="shared-cims-row">`;
-  h+=`<div class="shared-cim-pill"><div class="pnum">cim ${r.num_cim1||r.num}</div><div class="pname">${r.nombre}</div></div>`;
-  h+=`<div class="shared-cim-pill"><div class="pnum">cim ${r.num_cim2||'—'}</div><div class="pname">${r.nombre2}</div></div>`;
-  h+=`</div>`;
-  h+=`<div class="cloc" style="margin-top:.3rem;">📍 ${r.ubicacion||'—'}${r.comarca?' · '+r.comarca:''}${r.altitud?' · '+Math.round(r.altitud)+'m':''}</div>`;
+  let h=`<div class="card ${isP?'prohib':''}"><div class="rank">#${rank}</div>`;
+  h+=`<div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.3rem;"><div class="cnum-tag" style="margin-bottom:0;">cim ${f.numCim||'—'}</div>${badge?`<span class="dbl-badge">${badge}</span>`:''}</div>`;
+  h+=`<div class="cname">${f.nombre||'—'}</div>`;
+  h+=`<div class="cloc">📍 ${f.ubicacion||'—'}${f.comarca?' · '+f.comarca:''}${f.altitud?' · '+Math.round(f.altitud)+'m':''}</div>`;
   h+=difHtml(r);
-  h+=`<div class="cstats"><div class="cs"><div class="v">${r.km?r.km.toFixed(1)+'km':'—'}</div><div class="l">distància</div></div><div class="cs"><div class="v">${r.desnivel?Math.round(r.desnivel)+'m':'—'}</div><div class="l">desnivell</div></div><div class="cs"><div class="v">${r.horas_ruta?r.horas_ruta+'h':'—'}</div><div class="l">ruta</div></div></div>`;
+  h+=`<div class="cstats"><div class="cs"><div class="v">${f.km?parseFloat(f.km).toFixed(1)+'km':'—'}</div><div class="l">distància</div></div><div class="cs"><div class="v">${f.desnivel?Math.round(f.desnivel)+'m':'—'}</div><div class="l">desnivell</div></div><div class="cs"><div class="v">${f.horasRuta?f.horasRuta+'h':'—'}</div><div class="l">ruta</div></div></div>`;
   h+=`<div class="cf"><div class="clinks">`;
-  if(r.enlace_ruta)h+=`<a class="cl p" href="${r.enlace_ruta}" target="_blank">↗ Ruta</a>`;
-  if(r.enlace_maps)h+=`<a class="cl m" href="${r.enlace_maps}" target="_blank">↗ Maps</a>`;
-  if(r.enlace_meteocat)h+=`<a class="cl w" href="${r.enlace_meteocat}" target="_blank">☁ Meteo</a>`;
+  if(f.enlaceRuta)h+=`<a class="cl p" href="${f.enlaceRuta}" target="_blank">↗ Ruta</a>`;
+  if(f.enlaceMaps)h+=`<a class="cl m" href="${f.enlaceMaps}" target="_blank">↗ Maps</a>`;
+  if(f.enlaceMeteo)h+=`<a class="cl w" href="${f.enlaceMeteo}" target="_blank">☁ Meteo</a>`;
   h+=`</div><div class="meta">`;
   if(hotelNeed(r))h+=`<span class="mtag hotel">🏨 ${r.hotel}</span>`;
   if(r.horas_totales)h+=`<span class="mtag total">⏱ ${r.horas_totales}h total</span>`;
@@ -519,6 +484,23 @@ function sharedCard(r,rank){
   if(r.anotaciones)h+=`<div class="cnote">⚠ ${r.anotaciones}</div>`;
   if(r.cosas_interesantes&&r.cosas_interesantes!=='-')h+=`<div class="cint">★ ${r.cosas_interesantes}</div>`;
   return h+`</div>`;
+}
+
+/* ── SEQUENTIAL DOUBLE (2 cims, 2 rutes diferents el mateix dia) ── */
+/* Cada cim es mostra com una targeta pròpia amb les seves dades individuals. */
+function seqCard(r,rank){
+  let h=individualCard(r,{numCim:r.num_cim1||r.num,nombre:r.nombre,ubicacion:r.ubicacion,comarca:r.comarca,altitud:r.altitud,km:r.km,desnivel:r.desnivel,horasRuta:r.horas_ruta,enlaceRuta:r.enlace_ruta,enlaceMaps:r.enlace_maps,enlaceMeteo:r.enlace_meteocat},rank,'1/2 · mateixa sortida');
+  h+=individualCard(r,{numCim:r.num_cim2,nombre:r.nombre2,ubicacion:r.ubicacion2,comarca:r.comarca2,altitud:r.altitud2,km:r.km2,desnivel:r.desnivel2,horasRuta:r.horas_ruta2,enlaceRuta:r.enlace_ruta2,enlaceMaps:r.enlace_maps_entre,enlaceMeteo:r.enlace_meteocat2},rank,'2/2 · mateixa sortida');
+  return h;
+}
+
+/* ── SHARED DOUBLE (2 cims, 1 sola ruta que passa per tots dos) ── */
+/* Cada cim es mostra com una targeta pròpia; com és la mateixa ruta, les dades es dupliquen visualment. */
+function sharedCard(r,rank){
+  const common={km:r.km,desnivel:r.desnivel,horasRuta:r.horas_ruta,enlaceRuta:r.enlace_ruta,enlaceMaps:r.enlace_maps,enlaceMeteo:r.enlace_meteocat,ubicacion:r.ubicacion,comarca:r.comarca,altitud:r.altitud};
+  let h=individualCard(r,Object.assign({numCim:r.num_cim1||r.num,nombre:r.nombre},common),rank,'1/2 · mateixa ruta');
+  h+=individualCard(r,Object.assign({numCim:r.num_cim2,nombre:r.nombre2},common),rank,'2/2 · mateixa ruta');
+  return h;
 }
 
 function togPanel(id,btn){
@@ -660,7 +642,7 @@ function cardWithLabel(r, rank) {
   var h = cardFor(r, rank), lbl = '';
   if (r._sg) { lbl = '<div class="smart-lbl ' + r._sg.cls + '">' + r._sg.lbl + '</div>'; }
   else if (r._res) { lbl = '<div class="smart-reserved">Guardar per ' + SK_NM[r._res] + '</div>'; }
-  if (lbl) { h = h.replace(/(<div class="rank">#[0-9]+<\/div>)/, '$1' + lbl); }
+  if (lbl) { h = h.replace(/(<div class="rank">#[0-9]+<\/div>)/g, '$1' + lbl); }
   return h;
 }
 
@@ -792,6 +774,52 @@ function buildDoneSection() {
     done.length + " rutes · " + totalCims(done) + " cims · " +
     totalKm.toFixed(1) + " km · " + Math.round(totalDsn) + " m↑ · " + totalH.toFixed(1) + " h";
 
+  // Renderitza una fila (un cim). f = dades individuals del cim; badge opcional per marcar-lo com a part d'una doble.
+  function doneRow(sNum, sDate, f, badge) {
+    var bg = f.foto
+      ? "background:linear-gradient(120deg,rgba(11,11,11,.88),rgba(11,11,11,.6) 55%,rgba(11,11,11,.4)),url('" + f.foto + "') center/cover no-repeat;"
+      : "background:var(--surf);";
+    var row = "<div style=\"display:grid;grid-template-columns:4.5rem 1fr;gap:.8rem;align-items:start;" +
+           "padding:.9rem 1rem;margin:.4rem 2rem;" + bg + "border:1px solid var(--border);" +
+           "border-radius:2px;border-left:2px solid var(--gborder);\">";
+
+    // Columna esquerra
+    row += "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;\">" +
+           "<div style=\"font-family:Bebas Neue,sans-serif;font-size:1.8rem;line-height:1;color:var(--green);\">" + sNum + "</div>" +
+           "<div style=\"font-size:.42rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted2);font-family:DM Mono,monospace;\">sortida</div>" +
+           "<div style=\"font-size:.48rem;color:var(--muted2);font-family:DM Mono,monospace;margin-top:.2rem;text-align:center;line-height:1.4;\">" + sDate + "</div>" +
+           "</div>";
+
+    // Columna dreta
+    row += "<div>";
+
+    row += "<div style=\"display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.3rem;\">" +
+           "<div class=\"cnum-tag\" style=\"margin-bottom:0;\">cim " + (f.numCim || "—") + "</div>" +
+           (badge ? "<span class=\"dbl-badge\">" + badge + "</span>" : "") +
+           "</div>";
+    row += "<div class=\"cname\" style=\"margin-bottom:.3rem;padding-right:0;\">" + (f.nombre || "—") + "</div>";
+
+    row += "<div class=\"cloc\">&#128205; " +
+           (f.ubicacion || "—") + (f.comarca ? " · " + f.comarca : "") +
+           (f.altitud ? " · " + Math.round(f.altitud) + "m" : "") + "</div>";
+
+    row += "<div class=\"cstats\" style=\"margin-bottom:.4rem;\">" +
+           (f.km ? "<div class=\"cs\"><div class=\"v\">" + parseFloat(f.km).toFixed(1) + "km</div><div class=\"l\">dist</div></div>" : "") +
+           (f.desnivel ? "<div class=\"cs\"><div class=\"v\">" + Math.round(f.desnivel) + "m</div><div class=\"l\">↑</div></div>" : "") +
+           (f.horasRuta ? "<div class=\"cs\"><div class=\"v\">" + f.horasRuta + "h</div><div class=\"l\">temps</div></div>" : "") +
+           "</div>";
+
+    row += "<div class=\"clinks\">" +
+           (f.enlaceRuta ? "<a class=\"cl p\" href=\"" + f.enlaceRuta + "\" target=\"_blank\">&#8599; Ruta</a>" : "") +
+           (f.enlaceStrava ? "<a class=\"cl\" href=\"" + f.enlaceStrava + "\" target=\"_blank\" style=\"border-color:#fc4c02;color:#fc4c02;\">&#8599; Strava</a>" : "") +
+           (f.enlaceMaps ? "<a class=\"cl m\" href=\"" + f.enlaceMaps + "\" target=\"_blank\">&#8599; Maps</a>" : "") +
+           (f.enlaceMeteo ? "<a class=\"cl w\" href=\"" + f.enlaceMeteo + "\" target=\"_blank\">&#9729; Meteo</a>" : "") +
+           "</div>";
+
+    row += "</div></div>";
+    return row;
+  }
+
   var out = "";
   done.forEach(function(r) {
     var parts   = (r.fecha || "").split(" - ");
@@ -799,53 +827,23 @@ function buildDoneSection() {
     var sDate   = (parts[1] || "").trim();
     var isDbl   = r.double_type && r.nombre2;
 
-    out += "<div style=\"display:grid;grid-template-columns:4.5rem 1fr;gap:.8rem;align-items:start;" +
-           "padding:.9rem 1rem;margin:.4rem 2rem;background:var(--surf);border:1px solid var(--border);" +
-           "border-radius:2px;border-left:2px solid var(--gborder);\">";
+    // Si la sortida ve com "14/15" (dues sortides comptades per separat), repartim un número a cada cim.
+    var sSplit = sNum.split('/');
+    var sNum1  = (sSplit[0] || sNum).trim();
+    var sNum2  = (sSplit.length > 1 ? sSplit[1] : sNum).trim();
 
-    // Columna esquerra
-    out += "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;\">" +
-           "<div style=\"font-family:Bebas Neue,sans-serif;font-size:1.8rem;line-height:1;color:var(--green);\">" + sNum + "</div>" +
-           "<div style=\"font-size:.42rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted2);font-family:DM Mono,monospace;\">sortida</div>" +
-           "<div style=\"font-size:.48rem;color:var(--muted2);font-family:DM Mono,monospace;margin-top:.2rem;text-align:center;line-height:1.4;\">" + sDate + "</div>" +
-           "</div>";
-
-    // Columna dreta
-    out += "<div>";
-
-    if (isDbl) {
-      out += "<div style=\"display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.35rem;\">" +
-             "<div style=\"background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.2rem .5rem;\">" +
-             "<div class=\"cnum-tag\">cim " + (r.num_cim1 || r.num) + "</div>" +
-             "<div class=\"cname\" style=\"padding-right:0;\">" + r.nombre + "</div></div>" +
-             "<div style=\"background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.2rem .5rem;\">" +
-             "<div class=\"cnum-tag\">cim " + (r.num_cim2 || "—") + "</div>" +
-             "<div class=\"cname\" style=\"padding-right:0;\">" + r.nombre2 + "</div></div>" +
-             "</div>";
+    if (isDbl && r.double_type === "sequential") {
+      // Dues rutes diferents el mateix dia: cada cim amb les seves dades pròpies (i el seu propi número de sortida).
+      out += doneRow(sNum1, sDate, {numCim:r.num_cim1||r.num, nombre:r.nombre, ubicacion:r.ubicacion, comarca:r.comarca, altitud:r.altitud, km:r.km, desnivel:r.desnivel, horasRuta:r.horas_ruta, enlaceRuta:r.enlace_ruta, enlaceStrava:r.enlace_strava, enlaceMaps:r.enlace_maps, enlaceMeteo:r.enlace_meteocat, foto:r.foto_url}, "1/2 · mateixa sortida");
+      out += doneRow(sNum2, sDate, {numCim:r.num_cim2, nombre:r.nombre2, ubicacion:r.ubicacion2, comarca:r.comarca2, altitud:r.altitud2, km:r.km2, desnivel:r.desnivel2, horasRuta:r.horas_ruta2, enlaceRuta:r.enlace_ruta2, enlaceStrava:r.enlace_strava2, enlaceMaps:r.enlace_maps_entre, enlaceMeteo:r.enlace_meteocat2, foto:r.foto_url2}, "2/2 · mateixa sortida");
+    } else if (isDbl) {
+      // Una sola ruta que passa per dos cims: mateixes dades duplicades visualment, però cada cim amb la seva pròpia foto i número.
+      var common = {ubicacion:r.ubicacion, comarca:r.comarca, altitud:r.altitud, km:r.km, desnivel:r.desnivel, horasRuta:r.horas_ruta, enlaceRuta:r.enlace_ruta, enlaceStrava:r.enlace_strava, enlaceMaps:r.enlace_maps, enlaceMeteo:r.enlace_meteocat};
+      out += doneRow(sNum1, sDate, Object.assign({numCim:r.num_cim1||r.num, nombre:r.nombre, foto:r.foto_url}, common), "1/2 · mateixa ruta");
+      out += doneRow(sNum2, sDate, Object.assign({numCim:r.num_cim2, nombre:r.nombre2, foto:r.foto_url2}, common), "2/2 · mateixa ruta");
     } else {
-      out += "<div class=\"cnum-tag\">cim " + (r.num_cim1 || r.num) + "</div>" +
-             "<div class=\"cname\" style=\"margin-bottom:.3rem;padding-right:0;\">" + r.nombre + "</div>";
+      out += doneRow(sNum, sDate, {numCim:r.num_cim1||r.num, nombre:r.nombre, ubicacion:r.ubicacion, comarca:r.comarca, altitud:r.altitud, km:r.km, desnivel:r.desnivel, horasRuta:r.horas_ruta, enlaceRuta:r.enlace_ruta, enlaceStrava:r.enlace_strava, enlaceMaps:r.enlace_maps, enlaceMeteo:r.enlace_meteocat, foto:r.foto_url}, null);
     }
-
-    out += "<div class=\"cloc\">&#128205; " +
-           (r.ubicacion || "—") + (r.comarca ? " · " + r.comarca : "") +
-           (r.altitud ? " · " + Math.round(r.altitud) + "m" : "") + "</div>";
-
-    out += "<div class=\"cstats\" style=\"margin-bottom:.4rem;\">" +
-           (r.km ? "<div class=\"cs\"><div class=\"v\">" + parseFloat(r.km).toFixed(1) + "km</div><div class=\"l\">dist</div></div>" : "") +
-           (r.desnivel ? "<div class=\"cs\"><div class=\"v\">" + Math.round(r.desnivel) + "m</div><div class=\"l\">↑</div></div>" : "") +
-           (r.horas_ruta ? "<div class=\"cs\"><div class=\"v\">" + r.horas_ruta + "h</div><div class=\"l\">temps</div></div>" : "") +
-           "</div>";
-
-    out += "<div class=\"clinks\">" +
-           (r.enlace_ruta ? "<a class=\"cl p\" href=\"" + r.enlace_ruta + "\" target=\"_blank\">&#8599; Ruta</a>" : "") +
-           (r.enlace_strava ? "<a class=\"cl\" href=\"" + r.enlace_strava + "\" target=\"_blank\" style=\"border-color:#fc4c02;color:#fc4c02;\">&#8599; Strava</a>" : "") +
-           (r.enlace_strava2 ? "<a class=\"cl\" href=\"" + r.enlace_strava2 + "\" target=\"_blank\" style=\"border-color:#fc4c02;color:#fc4c02;\">&#8599; Strava 2</a>" : "") +
-           (r.enlace_maps ? "<a class=\"cl m\" href=\"" + r.enlace_maps + "\" target=\"_blank\">&#8599; Maps</a>" : "") +
-           (r.enlace_meteocat ? "<a class=\"cl w\" href=\"" + r.enlace_meteocat + "\" target=\"_blank\">&#9729; Meteo</a>" : "") +
-           "</div>";
-
-    out += "</div></div>";
   });
 
   document.getElementById("doneList").innerHTML = out ||
