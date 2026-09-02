@@ -56,8 +56,6 @@ header{
 .hstat .n.g{color:var(--green);}
 .hstat .n.o{color:var(--muted);}
 .hstat .l{font-size:.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.18em;margin-top:.2rem;font-family:'DM Mono',monospace;}
-.mini-stars{display:none;width:38px;height:52px;margin-left:.7rem;background-image:url('estrellas-fondo.png?v=3');background-size:220% auto;background-position:28% 12%;background-repeat:no-repeat;border-radius:4px;flex-shrink:0;}
-@media(max-width:900px){.mini-stars{display:block;}}
 
 /* PROGRESS */
 .prog{
@@ -77,8 +75,6 @@ header{
 
 /* STEP 1 */
 #step1{position:relative;z-index:10;padding:2rem;}
-.stars-decor{position:absolute;top:0;right:0;width:46vw;max-width:900px;height:85vh;background-image:url('estrellas-fondo.png?v=3');background-repeat:no-repeat;background-position:top right;background-size:contain;opacity:.9;pointer-events:none;z-index:-1;}
-@media(max-width:900px){.stars-decor{display:none;}}
 .step-label{font-size:.54rem;text-transform:uppercase;letter-spacing:.24em;color:var(--muted2);margin-bottom:.6rem;font-family:'DM Mono',monospace;}
 .step-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);letter-spacing:.07em;line-height:1.15;margin-bottom:1.5rem;color:var(--text);}
 
@@ -284,7 +280,6 @@ header{
     <div class="hstat" id="hstatDone" onclick="toggleDone()" style="cursor:pointer;"><div class="n g" id="sDone">—</div><div class="l">Fets</div></div>
     <div class="hstat"><div class="n o" id="sPend">—</div><div class="l">Pendents</div></div>
     <div class="hstat"><div class="n" id="sTotal">150</div><div class="l">Total</div></div>
-    <div class="mini-stars"></div>
   </div>
 </header>
 
@@ -309,7 +304,6 @@ header{
 </div>
 
 <div id="step1">
-  <div class="stars-decor"></div>
   <div class="step-label">Selecciona el bloc de dificultat</div>
   <div class="step-q">On esteu ara?</div>
   <div class="season-selector" id="seasonSelector"></div>
