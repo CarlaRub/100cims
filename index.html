@@ -805,7 +805,7 @@ var SK_NM = {
   temp_otono: 'Tardor'
 };
 var SG = [
-  {g:1, cls:'g1', lbl:'G1 · Reservada per aquesta estació',  desc:'Verda en una estació crítica → màxima prioritat'},
+  {g:1, cls:'g1', lbl:'G1 · Reservada per aquesta estació',  desc:'Reservada per a aquesta estació crítica → màxima prioritat'},
   {g:2, cls:'g2', lbl:'G2 · Molt favorable',                      desc:'Verda ara + prohibida en alguna altra estació'},
   {g:3, cls:'g3', lbl:'G3 · Favorable',                           desc:'Verda ara, sense restriccions en altres estacions'},
   {g:4, cls:'g4', lbl:'G4 · Acceptable',                          desc:'Acceptable ara + prohibida en alguna altra estació'},
@@ -814,26 +814,50 @@ var SG = [
   {g:7, cls:'g7', lbl:'G7 · No fer en aquesta estació',           desc:'Temperatura no recomanada aquesta estació'}
 ];
 
+/* Estacions crítiques (per bloc). Una estació és crítica si compleix QUALSEVOL criteri:
+   V: menys d'1/3 de verdes · R: 1/2 o més de vermelles · T: 1/2 o més de taronges.
+   Ordenades de més a menys crítica: menys verdes primer; en empat, més vermelles. */
+function criticalSeasons(pending) {
+  var n = pending.length, info = {};
+  ALL_SK.forEach(function(sk) {
+    var g = 0, o = 0, rd = 0;
+    pending.forEach(function(r) { var c = r[sk] || 'orange'; if (c === 'green') g++; else if (c === 'red') rd++; else o++; });
+    var why = [];
+    if (g / n < 1/3)   why.push('V');
+    if (rd / n >= 1/2) why.push('R');
+    if (o / n >= 1/2)  why.push('T');
+    info[sk] = {g:g, o:o, rd:rd, why:why};
+  });
+  var crit = ALL_SK.filter(function(sk) { return info[sk].why.length > 0; });
+  crit.sort(function(a, b) { return info[a].g !== info[b].g ? info[a].g - info[b].g : info[b].rd - info[a].rd; });
+  return {crit:crit, info:info};
+}
+
 function runSmartSelect(pending) {
   var n = pending.length;
   if (!n) return [];
-  var gC = {};
-  for (var i = 0; i < ALL_SK.length; i++) {
-    var sk = ALL_SK[i], c = 0;
-    for (var j = 0; j < n; j++) if (pending[j][sk] === 'green') c++;
-    gC[sk] = c;
-  }
-  var critical = ALL_SK.filter(function(sk) { return (gC[sk] / n) < (1/3); });
-  for (var i = 0; i < n; i++) {
-    var r = pending[i];
-    var cands = critical.filter(function(sk) { return r[sk] === 'green'; });
-    if (!cands.length) { r._res = null; }
-    else {
-      var best = cands[0];
-      for (var k = 1; k < cands.length; k++) { if (gC[cands[k]] < gC[best]) best = cands[k]; }
-      r._res = best;
-    }
-  }
+  var cs = criticalSeasons(pending), crit = cs.crit, info = cs.info;
+  var quota = Math.ceil(n / 4);
+  for (var i = 0; i < n; i++) pending[i]._res = null;
+  /* Reserva amb cupo: cada estació crítica (de més a menys crítica) es queda com a màxim "quota" rutes.
+     Primer les verdes (les que són verdes en menys estacions primer); les taronges només si l'estació és crítica per vermelles (R). */
+  crit.forEach(function(sk) {
+    var allowOrange = info[sk].why.indexOf('R') !== -1;
+    var cands = pending.filter(function(r) {
+      if (r._res) return false;
+      var c = r[sk] || 'orange';
+      return c === 'green' || (c === 'orange' && allowOrange);
+    });
+    cands.sort(function(a, b) {
+      var ga = (a[sk] === 'green') ? 0 : 1, gb = (b[sk] === 'green') ? 0 : 1;
+      if (ga !== gb) return ga - gb;
+      var fa = ALL_SK.filter(function(x) { return a[x] === 'green'; }).length;
+      var fb = ALL_SK.filter(function(x) { return b[x] === 'green'; }).length;
+      if (fa !== fb) return fa - fb;
+      return (a.dificultad || 99) - (b.dificultad || 99);
+    });
+    cands.slice(0, quota).forEach(function(r) { r._res = sk; });
+  });
   var sc = SMAP[season];
   for (var i = 0; i < n; i++) {
     var r = pending[i];
@@ -880,13 +904,7 @@ function smartReset() {
 }
 
 function renderSmart(pending) {
-  var n = pending.length, sc = SMAP[season], gC = {};
-  for (var i = 0; i < ALL_SK.length; i++) {
-    var sk = ALL_SK[i], c = 0;
-    for (var j = 0; j < n; j++) if (pending[j][sk] === 'green') c++;
-    gC[sk] = c;
-  }
-  var crit = ALL_SK.filter(function(sk) { return (gC[sk] / n) < (1/3); });
+  var crit = pending.length ? criticalSeasons(pending).crit : [];
   var leg = '<span style="text-transform:uppercase;letter-spacing:.16em;font-size:.5rem;color:var(--accent);font-family:\'DM Mono\',monospace;">Selecció intel·ligent</span>';
   for (var i = 0; i < SG.length; i++) {
     leg += '<div class="sli"><div class="sdot ' + SG[i].cls + '"></div>' + SG[i].lbl + '</div>';
@@ -911,7 +929,7 @@ function renderSmart(pending) {
   var reserved = sorted.filter(function(r) { return r._gr === null; });
   if (reserved.length) {
     html += '<div class="shdr" style="color:var(--muted2)">Millor guardar-les (' + reserved.length + ')</div>';
-    html += '<div style="font-size:.5rem;color:var(--muted2);padding:.1rem 2rem .5rem;font-family:\'DM Mono\',monospace;letter-spacing:.04em;">Verdes en estació crítica — fer-les en el seu moment òptim</div>';
+    html += '<div style="font-size:.5rem;color:var(--muted2);padding:.1rem 2rem .5rem;font-family:\'DM Mono\',monospace;letter-spacing:.04em;">Reservades per a una altra estació crítica — fer-les en aquella estació</div>';
     html += '<div class="grid">';
     for (var ri = 0; ri < reserved.length; ri++) html += cardWithLabel(reserved[ri], rank++);
     html += '</div>';
