@@ -263,6 +263,49 @@ header{
 .smart-lbl.g5{background:rgba(100,100,100,.08);color:#6a6a6a;border-color:#3a3a3a;}
 .smart-lbl.g6{background:var(--surf2);color:#555;border-color:var(--border);}
 .smart-lbl.g7{background:rgba(230,57,70,.08);color:var(--red);border-color:var(--rborder);}
+/* SEARCH + FILTERS */
+.search-wrap{position:relative;display:flex;gap:.5rem;max-width:960px;margin-bottom:1.2rem;z-index:20;}
+.search-bar{flex:1;display:flex;align-items:center;gap:.5rem;background:var(--surf);border:1px solid var(--border);border-radius:2px;padding:0 .7rem;transition:border-color .2s;}
+.search-bar:focus-within{border-color:var(--muted2);}
+.search-ico{font-size:.95rem;color:var(--muted2);line-height:1;}
+#searchInput{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.04em;padding:.7rem 0;}
+#searchInput::placeholder{color:var(--muted2);}
+.search-clear{display:none;background:none;border:none;color:var(--muted2);cursor:pointer;font-size:.7rem;padding:.2rem;}
+.search-clear:hover{color:var(--text);}
+.search-clear.show{display:block;}
+.filter-btn{display:inline-flex;align-items:center;gap:.45rem;padding:0 .9rem;border-radius:2px;border:1px solid var(--border);background:var(--surf);color:var(--muted);font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.filter-btn:hover,.filter-btn.open{border-color:var(--muted);color:var(--text);}
+.filter-btn.has{border-color:var(--accent);color:var(--text);}
+.filter-btn .arr{transition:transform .2s;display:inline-block;}
+.filter-btn.open .arr{transform:rotate(180deg);}
+.filter-count{display:none;min-width:1.1rem;height:1.1rem;border-radius:50%;background:var(--accent);color:#fff;font-size:.5rem;align-items:center;justify-content:center;letter-spacing:0;}
+.filter-count.show{display:inline-flex;}
+.filter-panel{display:none;position:absolute;top:calc(100% + .4rem);right:0;width:min(420px,100%);background:var(--surf);border:1px solid var(--border);border-radius:2px;padding:1rem;box-shadow:0 12px 40px rgba(0,0,0,.75);}
+.filter-panel.open{display:block;}
+.filter-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);}
+.fgroup{margin-bottom:.85rem;}
+.flabel{font-size:.48rem;text-transform:uppercase;letter-spacing:.18em;color:var(--muted2);margin-bottom:.4rem;font-family:'DM Mono',monospace;}
+.fchips{display:flex;gap:.35rem;flex-wrap:wrap;}
+.fchip{padding:.28rem .7rem;border-radius:2px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;cursor:pointer;transition:all .15s;}
+.fchip:hover{border-color:var(--muted);color:var(--text);}
+.fchip.active{border-color:var(--text);color:var(--text);background:var(--surf2);}
+.fchip.g.active{border-color:var(--green);color:var(--green);background:rgba(46,204,113,.07);}
+.fchip.o.active{border-color:var(--orange);color:var(--orange);background:rgba(232,160,32,.07);}
+.fchip.r.active{border-color:var(--red);color:var(--red);background:rgba(230,57,70,.07);}
+.finput{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'DM Mono',monospace;font-size:.58rem;padding:.4rem .5rem;outline:none;}
+.finput:focus{border-color:var(--muted2);}
+select.finput{cursor:pointer;}
+.frange{display:flex;align-items:center;gap:.4rem;font-size:.6rem;color:var(--muted2);}
+.ffoot{display:flex;justify-content:space-between;gap:.5rem;padding-top:.6rem;border-top:1px solid var(--border);}
+#searchResults{display:none;max-width:960px;}
+#searchResults .grid{padding:0;}
+.search-meta{font-size:.54rem;color:var(--muted2);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:.7rem;display:flex;align-items:center;gap:.8rem;}
+.search-meta::after{content:'';flex:1;height:1px;background:var(--border);}
+.done-lbl{display:inline-block;font-size:.44rem;text-transform:uppercase;letter-spacing:.1em;border-radius:1px;padding:.07rem .3rem;margin-bottom:.24rem;border:1px solid var(--gborder);color:var(--green);background:rgba(46,204,113,.08);font-family:'DM Mono',monospace;}
+@media(max-width:640px){
+  .filter-btn{padding:0 .7rem;}
+  .filter-panel{width:100%;}
+}
 .smart-reserved{display:inline-block;font-size:.44rem;color:var(--muted2);background:var(--surf2);border:1px solid var(--border);border-radius:1px;padding:.07rem .3rem;margin-bottom:.24rem;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
 </style>
 </head>
@@ -313,6 +356,53 @@ header{
   <div class="step-label">Selecciona el bloc de dificultat</div>
   <div class="step-q">On esteu ara?</div>
   <div class="season-selector" id="seasonSelector"></div>
+  <div class="search-wrap" id="searchWrap">
+    <div class="search-bar">
+      <span class="search-ico">&#8981;</span>
+      <input id="searchInput" type="text" placeholder="Cerca per cim, poble, comarca o altitud…" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="searchClear" type="button" title="Esborrar">&#10005;</button>
+    </div>
+    <button class="filter-btn" id="filterBtn" type="button">Filtres<span class="filter-count" id="filterCount"></span><span class="arr">&#9662;</span></button>
+    <div class="filter-panel" id="filterPanel">
+      <div class="fgroup">
+        <div class="flabel">Estat</div>
+        <div class="fchips" id="fEstat">
+          <button type="button" class="fchip" data-v="all">Totes</button>
+          <button type="button" class="fchip" data-v="pending">Pendents</button>
+          <button type="button" class="fchip" data-v="done">Fetes</button>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Condicions (<span id="fSeasonLbl">—</span>)</div>
+        <div class="fchips" id="fCond">
+          <button type="button" class="fchip g" data-v="green">Òptima</button>
+          <button type="button" class="fchip o" data-v="orange">Acceptable</button>
+          <button type="button" class="fchip r" data-v="red">Prohibida</button>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Comarca</div>
+        <select class="finput" id="fComarca"><option value="">Totes</option></select>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Altitud (m)</div>
+        <div class="frange"><input class="finput" id="fAltMin" type="number" placeholder="mín" min="0"><span>–</span><input class="finput" id="fAltMax" type="number" placeholder="màx" min="0"></div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Dificultat</div>
+        <div class="frange"><input class="finput" id="fDifMin" type="number" placeholder="mín" min="0" step="0.1"><span>–</span><input class="finput" id="fDifMax" type="number" placeholder="màx" min="0" step="0.1"></div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Distància i desnivell màx.</div>
+        <div class="frange"><input class="finput" id="fKmMax" type="number" placeholder="km" min="0" step="0.5"><span>·</span><input class="finput" id="fDsnMax" type="number" placeholder="m ↑" min="0" step="50"></div>
+      </div>
+      <div class="ffoot">
+        <button type="button" class="back-btn" id="fReset">Netejar filtres</button>
+        <button type="button" class="back-btn" id="fClose">Tancar</button>
+      </div>
+    </div>
+  </div>
+  <div id="searchResults"></div>
   <div class="block-grid" id="blockGrid">
     <div class="loading"><div class="spin"></div>Carregant...</div>
   </div>
@@ -389,6 +479,7 @@ function buildSeasonSelector(){
       if(document.getElementById('step2').style.display!=='none'&&currentBlock){
         showResults(currentBlock.idx,currentBlock.s,currentBlock.e);
       }
+      runSearch();
     };
     sel.appendChild(btn);
   });
@@ -557,11 +648,135 @@ document.getElementById('backBtn').onclick=()=>{
   window.scrollTo({top:0,behavior:'smooth'});
 };
 
+/* ── BUSCADOR + FILTRES ── */
+var F_DEF={estat:'all',cond:[],comarca:'',altMin:'',altMax:'',difMin:'',difMax:'',kmMax:'',dsnMax:''};
+var F=Object.assign({},F_DEF,{cond:[]});
+
+function norm(s){return (s==null?'':String(s)).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function numOrNull(v){return v===''||v==null||isNaN(parseFloat(v))?null:parseFloat(v);}
+function routeAlts(r){return [r.altitud,r.altitud2].filter(function(v){return v!=null&&v!=='';}).map(Number);}
+function routeKm(r){return (parseFloat(r.km)||0)+(r.double_type==='sequential'?(parseFloat(r.km2)||0):0);}
+function routeDsn(r){return (parseFloat(r.desnivel)||0)+(r.double_type==='sequential'?(parseFloat(r.desnivel2)||0):0);}
+
+function matchQuery(r,q){
+  var qn=norm(q).trim();
+  if(!qn)return true;
+  /* Número: cim exacte o altitud que comença per aquests dígits (ex. "15" → 1500–1599 m, "1520m") */
+  if(/^\d+\s*m?$/.test(qn)){
+    var d=qn.replace(/\D/g,'');
+    if(String(r.num_cim1||r.num)===d||String(r.num_cim2||'')===d)return true;
+    return routeAlts(r).some(function(a){return String(Math.round(a)).indexOf(d)===0;});
+  }
+  var hay=norm([r.nombre,r.nombre2,r.ubicacion,r.ubicacion2,r.comarca,r.comarca2].join(' '));
+  return qn.split(/\s+/).every(function(t){return hay.indexOf(t)!==-1;});
+}
+
+function matchFilters(r){
+  if(F.estat==='pending'&&r.hecha)return false;
+  if(F.estat==='done'&&!r.hecha)return false;
+  if(F.cond.length&&F.cond.indexOf(tc(r))===-1)return false;
+  if(F.comarca&&r.comarca!==F.comarca&&r.comarca2!==F.comarca)return false;
+  var aMin=numOrNull(F.altMin),aMax=numOrNull(F.altMax);
+  if(aMin!=null||aMax!=null){
+    var alts=routeAlts(r);
+    if(!alts.some(function(a){return (aMin==null||a>=aMin)&&(aMax==null||a<=aMax);}))return false;
+  }
+  var dMin=numOrNull(F.difMin),dMax=numOrNull(F.difMax);
+  if(dMin!=null&&!(r.dificultad>=dMin))return false;
+  if(dMax!=null&&!(r.dificultad<=dMax))return false;
+  var kMax=numOrNull(F.kmMax);if(kMax!=null&&routeKm(r)>kMax)return false;
+  var sMax=numOrNull(F.dsnMax);if(sMax!=null&&routeDsn(r)>sMax)return false;
+  return true;
+}
+
+function countFilters(){
+  var n=0;
+  if(F.estat!==F_DEF.estat)n++;
+  if(F.cond.length)n++;
+  if(F.comarca)n++;
+  if(F.altMin!==''||F.altMax!=='')n++;
+  if(F.difMin!==''||F.difMax!=='')n++;
+  if(F.kmMax!=='')n++;
+  if(F.dsnMax!=='')n++;
+  return n;
+}
+
+function syncFilterUI(){
+  document.querySelectorAll('#fEstat .fchip').forEach(function(b){b.classList.toggle('active',b.dataset.v===F.estat);});
+  document.querySelectorAll('#fCond .fchip').forEach(function(b){b.classList.toggle('active',F.cond.indexOf(b.dataset.v)!==-1);});
+  document.getElementById('fComarca').value=F.comarca;
+  document.getElementById('fAltMin').value=F.altMin;document.getElementById('fAltMax').value=F.altMax;
+  document.getElementById('fDifMin').value=F.difMin;document.getElementById('fDifMax').value=F.difMax;
+  document.getElementById('fKmMax').value=F.kmMax;document.getElementById('fDsnMax').value=F.dsnMax;
+}
+
+function runSearch(){
+  var input=document.getElementById('searchInput');
+  if(!input||!routes.length)return;
+  var q=input.value.trim(),nF=countFilters();
+  document.getElementById('fSeasonLbl').textContent=SFULL[season];
+  document.getElementById('searchClear').classList.toggle('show',!!q);
+  var fc=document.getElementById('filterCount');
+  fc.textContent=nF||'';fc.classList.toggle('show',nF>0);
+  document.getElementById('filterBtn').classList.toggle('has',nF>0);
+  var res=document.getElementById('searchResults'),grid=document.getElementById('blockGrid');
+  if(!q&&!nF){res.style.display='none';res.innerHTML='';grid.style.display='';return;}
+  grid.style.display='none';res.style.display='block';
+  var list=routes.filter(function(r){return matchQuery(r,q)&&matchFilters(r);}).sort(function(a,b){return a.num-b.num;});
+  var html='<div class="search-meta">'+list.length+' rutes · '+totalCims(list)+' cims · condicions de '+SFULL[season]+'</div>';
+  if(!list.length){
+    html+='<div class="no-result" style="padding:1rem 0;">Cap ruta coincideix amb la cerca.</div>';
+  }else{
+    html+='<div class="grid">';
+    list.forEach(function(r,i){
+      var h=cardFor(r,i+1);
+      if(r.hecha)h=h.replace(/(<div class="rank">#[0-9]+<\/div>)/g,'$1<div class="done-lbl">✓ Fet</div>');
+      html+=h;
+    });
+    html+='</div>';
+  }
+  res.innerHTML=html;
+}
+
+function initSearch(){
+  var sel=document.getElementById('fComarca'),set={};
+  routes.forEach(function(r){if(r.comarca)set[r.comarca]=1;if(r.comarca2)set[r.comarca2]=1;});
+  Object.keys(set).sort(function(a,b){return a.localeCompare(b,'ca');}).forEach(function(c){
+    var o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);
+  });
+  syncFilterUI();
+  runSearch();
+}
+
+(function(){
+  var input=document.getElementById('searchInput'),btn=document.getElementById('filterBtn'),panel=document.getElementById('filterPanel');
+  var t=null;
+  input.addEventListener('input',function(){clearTimeout(t);t=setTimeout(runSearch,120);});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'){input.value='';runSearch();}});
+  document.getElementById('searchClear').onclick=function(){input.value='';runSearch();input.focus();};
+  function setPanel(open){panel.classList.toggle('open',open);btn.classList.toggle('open',open);}
+  btn.onclick=function(e){e.stopPropagation();setPanel(!panel.classList.contains('open'));};
+  document.getElementById('fClose').onclick=function(){setPanel(false);};
+  document.addEventListener('click',function(e){if(!document.getElementById('searchWrap').contains(e.target))setPanel(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setPanel(false);});
+  document.querySelectorAll('#fEstat .fchip').forEach(function(b){b.onclick=function(){F.estat=b.dataset.v;syncFilterUI();runSearch();};});
+  document.querySelectorAll('#fCond .fchip').forEach(function(b){b.onclick=function(){
+    var i=F.cond.indexOf(b.dataset.v);if(i===-1)F.cond.push(b.dataset.v);else F.cond.splice(i,1);
+    syncFilterUI();runSearch();
+  };});
+  document.getElementById('fComarca').onchange=function(){F.comarca=this.value;runSearch();};
+  [['fAltMin','altMin'],['fAltMax','altMax'],['fDifMin','difMin'],['fDifMax','difMax'],['fKmMax','kmMax'],['fDsnMax','dsnMax']].forEach(function(p){
+    document.getElementById(p[0]).addEventListener('input',function(){F[p[1]]=this.value.trim();runSearch();});
+  });
+  document.getElementById('fReset').onclick=function(){F=Object.assign({},F_DEF,{cond:[]});syncFilterUI();runSearch();};
+})();
+
 (async()=>{
   try{
     routes=await load();
     updateStats();
     buildBlockGrid();
+    initSearch();
   }catch(e){
     document.getElementById('blockGrid').innerHTML=`<div style="padding:2rem;color:var(--red);font-family:'DM Mono',monospace;font-size:.7rem;">Error: ${e.message}</div>`;
   }
@@ -852,3 +1067,4 @@ function buildDoneSection() {
 </script>
 </body>
 </html>
+
